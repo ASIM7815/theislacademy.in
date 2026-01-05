@@ -15,6 +15,36 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
     });
 });
 
+// Hero Section Parallax Effect (Desktop only)
+const heroBackgroundImage = document.querySelector('.hero-background-image');
+const isMobile = window.innerWidth <= 768;
+
+if (heroBackgroundImage && !isMobile) {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const heroHeight = document.querySelector('.hero').offsetHeight;
+        
+        if (scrolled < heroHeight) {
+            const parallaxSpeed = 0.5;
+            heroBackgroundImage.style.transform = `translateY(${scrolled * parallaxSpeed}px) scale(${1 + scrolled * 0.0001})`;
+        }
+    });
+
+    // Add mouse move effect for interactive parallax (Desktop only)
+    document.addEventListener('mousemove', (e) => {
+        const heroSection = document.querySelector('.hero');
+        if (!heroSection) return;
+        
+        const rect = heroSection.getBoundingClientRect();
+        if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+            const x = (e.clientX - window.innerWidth / 2) / 50;
+            const y = (e.clientY - window.innerHeight / 2) / 50;
+            
+            heroBackgroundImage.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
+        }
+    });
+}
+
 // Smooth Scrolling
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
