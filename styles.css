@@ -1423,8 +1423,59 @@ footer {
         font-size: 1.2rem;
     }
 
+    section {
+        padding: 3rem 1rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
     .section-title {
         font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-description {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* About Section Mobile */
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .about-card {
+        padding: 1.5rem;
+    }
+
+    .about-card h3 {
+        font-size: 1.3rem;
+    }
+
+    .about-card p, .about-card li {
+        font-size: 0.9rem;
+    }
+
+    /* Objectives Section Mobile */
+    .objectives-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .objective-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .objective-card .icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .objective-card p {
+        font-size: 0.9rem;
     }
 
     .module-header {
@@ -1433,11 +1484,33 @@ footer {
     }
 
     .registration-form {
-        padding: 2rem 1.5rem;
+        padding: 1.5rem 1rem;
+        border-radius: 20px;
+    }
+
+    .registration-form h3 {
+        font-size: 1.3rem;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 0.9rem;
+        padding: 0.7rem;
     }
 
     .form-row {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .submit-btn {
+        padding: 0.9rem 2rem;
+        font-size: 1rem;
     }
 
     /* Roadmap Mobile */
@@ -1484,11 +1557,94 @@ footer {
     }
 
     section {
-        padding: 3rem 0;
+        padding: 2.5rem 0.75rem;
+    }
+
+    .container {
+        padding: 0 0.75rem;
     }
 
     .section-title {
         font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .section-description {
+        font-size: 0.9rem;
+    }
+
+    /* About Cards Small Mobile */
+    .about-grid {
+        gap: 1rem;
+    }
+
+    .about-card {
+        padding: 1.25rem 1rem;
+        border-radius: 15px;
+    }
+
+    .about-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .about-card p, .about-card li {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    .about-card ul {
+        gap: 0.6rem;
+    }
+
+    /* Objectives Cards Small Mobile */
+    .objectives-grid {
+        gap: 1rem;
+    }
+
+    .objective-card {
+        padding: 1.25rem 1rem;
+        border-radius: 20px;
+    }
+
+    .objective-card .icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .objective-card p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    /* Registration Form Small Mobile */
+    .registration-form {
+        padding: 1.25rem 0.75rem;
+    }
+
+    .registration-form h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .registration-form p {
+        font-size: 0.85rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 0.85rem;
+        padding: 0.6rem;
+    }
+
+    .submit-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
     }
 
     /* Roadmap Extra Small */
@@ -1498,11 +1654,20 @@ footer {
         font-size: 1.2rem;
     }
 
+    .roadmap-content {
+        padding: 1rem;
+    }
+
     .roadmap-content h3 {
         font-size: 1.1rem;
     }
 
     .roadmap-content p {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+    }
+
+    .roadmap-item:nth-child(odd) .roadmap-content,
+    .roadmap-item:nth-child(even) .roadmap-content {
+        margin-left: 1rem;
     }
 }
