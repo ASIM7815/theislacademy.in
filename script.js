@@ -1,3 +1,16 @@
+// Auto-scroll hero section after 7 seconds on page load
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const aboutSection = document.querySelector('#about');
+        if (aboutSection) {
+            aboutSection.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }, 7000);
+});
+
 // Mobile Navigation Toggle
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
