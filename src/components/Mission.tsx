@@ -31,7 +31,7 @@ export default function Mission() {
         </span>
 
         <h2
-          className={`text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-snug mb-8 transition-all duration-700 delay-100 ${
+          className={`text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-snug mb-8 transition-all duration-700 delay-100 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
@@ -45,7 +45,7 @@ export default function Mission() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          <p className="text-white font-semibold text-lg md:text-xl italic">
+          <p className="text-white font-semibold text-xl md:text-2xl italic">
             &ldquo;INDIANS NEED MORE JOB CREATORS AND FEWER JOB SEEKERS&rdquo;
           </p>
         </div>

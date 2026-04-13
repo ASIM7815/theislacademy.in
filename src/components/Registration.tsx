@@ -1,19 +1,23 @@
 "use client";
 import { useState, FormEvent } from "react";
 import { useInView } from "@/hooks/useInView";
+import { GraduationCap, Calendar, CheckCircle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export default function Registration() {
   const { ref, isVisible } = useInView(0.1);
   const [submitted, setSubmitted] = useState(false);
+  void submitted;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    console.log("Registration data:", data);
-    setSubmitted(true);
+    const name = formData.get("name") as string;
+    const phone = formData.get("phone") as string;
+    const education = formData.get("education") as string;
+    const message = `Hi ISL Academy, I'd like to register for the program.%0A%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AEducation: ${encodeURIComponent(education)}`;
+    window.open(`https://wa.me/918897860944?text=${message}`, "_blank");
     e.currentTarget.reset();
-    setTimeout(() => setSubmitted(false), 5000);
   };
 
   return (
@@ -33,27 +37,27 @@ export default function Registration() {
             <span className="text-coral text-sm font-semibold uppercase tracking-widest">
               Join Us
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark mt-3 mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-text-dark mt-3 mb-6 leading-tight">
               Register Now
             </h2>
             <div className="w-16 h-1 bg-coral rounded-full mb-6" />
-            <p className="text-text-medium leading-relaxed mb-8">
+            <p className="text-text-medium text-base md:text-lg leading-relaxed mb-8">
               Take the first step towards building your leadership skills,
               business acumen, and communication confidence. Fill out the form
               to reserve your spot in our transformative program.
             </p>
 
             <div className="flex flex-col gap-4">
-              {[
-                { icon: "🎓", text: "Open to Intermediate, Undergraduate & Foundation students" },
-                { icon: "📅", text: "Year-round program from June to March" },
-                { icon: "✅", text: "100% activity-based — no traditional exams" },
-              ].map((item) => (
+              {([
+                { icon: GraduationCap, text: "Open to Intermediate, Undergraduate & Foundation students" },
+                { icon: Calendar, text: "Year-round program from June to March" },
+                { icon: CheckCircle, text: "100% activity-based — no traditional exams" },
+              ] as { icon: LucideIcon; text: string }[]).map((item) => (
                 <div key={item.text} className="flex items-center gap-3">
-                  <span className="w-8 h-8 flex items-center justify-center bg-coral/10 rounded-lg text-base">
-                    {item.icon}
+                  <span className="w-8 h-8 flex items-center justify-center bg-coral/10 rounded-lg">
+                    <item.icon className="w-4 h-4 text-coral" strokeWidth={1.5} />
                   </span>
-                  <span className="text-text-medium text-sm">{item.text}</span>
+                  <span className="text-text-medium text-base">{item.text}</span>
                 </div>
               ))}
             </div>
@@ -66,7 +70,7 @@ export default function Registration() {
             }`}
           >
             <div className="bg-beige rounded-2xl p-8 md:p-10 border border-gray-100">
-              {submitted && (
+              {false && submitted && (
                 <div className="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4 mb-6 text-sm font-medium">
                   Thank you for registering! We will contact you soon.
                 </div>
@@ -164,7 +168,7 @@ export default function Registration() {
                   type="submit"
                   className="w-full bg-coral hover:bg-coral-dark text-white py-3.5 rounded-xl font-semibold text-base transition-all duration-200 hover:shadow-lg hover:shadow-coral/30 mt-2"
                 >
-                  Submit Registration
+                  Register Now
                 </button>
               </form>
             </div>

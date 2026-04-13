@@ -56,7 +56,7 @@ export default function Roadmap() {
           <span className="text-coral text-sm font-semibold uppercase tracking-widest">
             Timeline
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mt-3">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mt-3 leading-tight">
             Your Learning Journey
           </h2>
           <div className="w-16 h-1 bg-coral mx-auto mt-4 rounded-full" />
@@ -86,10 +86,10 @@ export default function Roadmap() {
                       {step.num}
                     </div>
                     <div>
-                      <h3 className="font-bold text-lg text-white mb-1">
+                      <h3 className="font-bold text-xl text-white mb-1">
                         {step.title}
                       </h3>
-                      <p className="text-white/60 text-sm leading-relaxed">
+                      <p className="text-white/60 text-base leading-relaxed">
                         {step.desc}
                       </p>
                     </div>
@@ -100,10 +100,10 @@ export default function Roadmap() {
                     <div className={`${isLeft ? "text-right" : ""}`}>
                       {isLeft && (
                         <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                          <h3 className="font-bold text-lg text-white mb-1">
+                          <h3 className="font-bold text-xl text-white mb-1">
                             {step.title}
                           </h3>
-                          <p className="text-white/60 text-sm leading-relaxed">
+                          <p className="text-white/60 text-base leading-relaxed">
                             {step.desc}
                           </p>
                         </div>
@@ -116,10 +116,10 @@ export default function Roadmap() {
                     <div className={`${!isLeft ? "" : ""}`}>
                       {!isLeft && (
                         <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
-                          <h3 className="font-bold text-lg text-white mb-1">
+                          <h3 className="font-bold text-xl text-white mb-1">
                             {step.title}
                           </h3>
-                          <p className="text-white/60 text-sm leading-relaxed">
+                          <p className="text-white/60 text-base leading-relaxed">
                             {step.desc}
                           </p>
                         </div>

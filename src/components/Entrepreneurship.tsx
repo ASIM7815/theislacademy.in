@@ -1,40 +1,42 @@
 "use client";
 import { useInView } from "@/hooks/useInView";
+import { Brain, Lightbulb, Building2, TrendingUp, Banknote, Scale } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-const pathways = [
+const pathways: { num: string; icon: LucideIcon; title: string; desc: string }[] = [
   {
     num: "01",
-    icon: "🧠",
+    icon: Brain,
     title: "Entrepreneurial Mindset",
     desc: "Developing entrepreneurial mindset and opportunity identification",
   },
   {
     num: "02",
-    icon: "💡",
+    icon: Lightbulb,
     title: "Pre-Incubation & Validation",
     desc: "Exploring ideas through pre-incubation and idea validation",
   },
   {
     num: "03",
-    icon: "🏭",
+    icon: Building2,
     title: "Ecosystem Awareness",
     desc: "Introduction to incubation and start-up ecosystem",
   },
   {
     num: "04",
-    icon: "💹",
+    icon: TrendingUp,
     title: "Business Models & Revenue",
     desc: "Understanding value creation and business models",
   },
   {
     num: "05",
-    icon: "💰",
+    icon: Banknote,
     title: "Funding & Investor Awareness",
     desc: "Building confidence in engaging with financial ecosystems",
   },
   {
     num: "06",
-    icon: "⚖️",
+    icon: Scale,
     title: "Responsible Entrepreneurship",
     desc: "Statutory awareness and responsible entrepreneurship",
   },
@@ -62,11 +64,11 @@ export default function Entrepreneurship() {
           <span className="text-coral text-sm font-semibold uppercase tracking-widest">
             Pathways
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark mt-3">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-text-dark mt-3 leading-tight">
             Entrepreneurship Pathways
           </h2>
           <div className="w-16 h-1 bg-coral mx-auto mt-4 rounded-full" />
-          <p className="text-text-medium mt-6 max-w-xl mx-auto">
+          <p className="text-text-medium text-base md:text-lg mt-6 max-w-xl mx-auto">
             Nurture Potential &bull; Expand Thinking &bull; Recognize Opportunities
           </p>
         </div>
@@ -99,14 +101,14 @@ export default function Entrepreneurship() {
             >
               <div className="flex items-center gap-4 mb-4">
                 <span className="gradient-text text-3xl font-extrabold">{p.num}</span>
-                <span className="w-10 h-10 flex items-center justify-center bg-navy/5 rounded-xl text-xl group-hover:bg-coral/10 transition-colors">
-                  {p.icon}
+                <span className="w-10 h-10 flex items-center justify-center bg-navy/5 rounded-xl group-hover:bg-coral/10 transition-colors">
+                  <p.icon className="w-5 h-5 text-coral" strokeWidth={1.5} />
                 </span>
               </div>
-              <h3 className="font-bold text-lg text-text-dark mb-2 group-hover:text-coral transition-colors">
+              <h3 className="font-bold text-xl text-text-dark mb-2 group-hover:text-coral transition-colors">
                 {p.title}
               </h3>
-              <p className="text-text-medium text-sm leading-relaxed">{p.desc}</p>
+              <p className="text-text-medium text-base leading-relaxed">{p.desc}</p>
             </div>
           ))}
         </div>
@@ -118,7 +120,7 @@ export default function Entrepreneurship() {
             tagsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          <h4 className="text-lg font-semibold text-text-dark mb-5">
+          <h4 className="text-xl font-semibold text-text-dark mb-5">
             Learning Experience
           </h4>
           <div className="flex flex-wrap justify-center gap-3">
@@ -131,7 +133,7 @@ export default function Entrepreneurship() {
               </span>
             ))}
           </div>
-          <p className="text-text-medium text-sm mt-6 max-w-xl mx-auto leading-relaxed">
+          <p className="text-text-medium text-base mt-6 max-w-xl mx-auto leading-relaxed">
             Every pathway is driven by activity-based learning, ensuring students
             gain practical outcomes they can apply immediately.
           </p>

@@ -1,5 +1,7 @@
 "use client";
 import { useInView } from "@/hooks/useInView";
+import { Users, Sparkles, Target, FlaskConical, Award, Calendar } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 const whoCanJoin = [
   {
@@ -16,24 +18,24 @@ const whoCanJoin = [
   },
 ];
 
-const features = [
+const features: { icon: LucideIcon; title: string; desc: string }[] = [
   {
-    icon: "🎯",
+    icon: Target,
     title: "Hands-on Skill Development",
     desc: "Practical learning through real-world scenarios",
   },
   {
-    icon: "🔬",
+    icon: FlaskConical,
     title: "Interactive Activities & Labs",
     desc: "Engaging workshops and practical exercises",
   },
   {
-    icon: "🌟",
+    icon: Award,
     title: "Personal Growth & Leadership",
     desc: "Transform into a confident, skilled leader",
   },
   {
-    icon: "📅",
+    icon: Calendar,
     title: "Year-Round Learning Journey",
     desc: "Comprehensive program from June to March",
   },
@@ -65,7 +67,7 @@ export default function About() {
           <span className="text-coral text-sm font-semibold uppercase tracking-widest">
             Discover
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark mt-3">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-text-dark mt-3 leading-tight">
             About the Program
           </h2>
           <div className="w-16 h-1 bg-coral mx-auto mt-4 rounded-full" />
@@ -81,8 +83,8 @@ export default function About() {
             }`}
           >
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl">👥</span>
-              <h3 className="text-2xl font-bold text-text-dark">Who Can Join</h3>
+              <Users className="w-8 h-8 text-coral" strokeWidth={1.5} />
+              <h3 className="text-3xl font-bold text-text-dark">Who Can Join</h3>
             </div>
             <div className="flex flex-col gap-4">
               {whoCanJoin.map((item) => (
@@ -109,8 +111,8 @@ export default function About() {
             }`}
           >
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl">⭐</span>
-              <h3 className="text-2xl font-bold text-text-dark">
+              <Sparkles className="w-8 h-8 text-coral" strokeWidth={1.5} />
+              <h3 className="text-3xl font-bold text-text-dark">
                 What Makes Us Special
               </h3>
             </div>
@@ -120,14 +122,14 @@ export default function About() {
                   key={item.title}
                   className="flex items-start gap-4 p-4 rounded-xl bg-beige hover:bg-cream transition-colors"
                 >
-                  <span className="w-10 h-10 flex items-center justify-center bg-navy/5 rounded-xl text-xl shrink-0">
-                    {item.icon}
+                  <span className="w-10 h-10 flex items-center justify-center bg-navy/5 rounded-xl shrink-0">
+                    <item.icon className="w-5 h-5 text-coral" strokeWidth={1.5} />
                   </span>
                   <div>
-                    <h4 className="font-semibold text-text-dark text-sm">
+                    <h4 className="font-semibold text-text-dark text-base">
                       {item.title}
                     </h4>
-                    <p className="text-text-light text-sm mt-1">{item.desc}</p>
+                    <p className="text-text-light text-base mt-1">{item.desc}</p>
                   </div>
                 </div>
               ))}

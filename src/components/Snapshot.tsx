@@ -55,7 +55,7 @@ export default function Snapshot() {
           <span className="text-coral text-sm font-semibold uppercase tracking-widest">
             Overview
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mt-3">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mt-3 leading-tight">
             Snapshot
           </h2>
           <div className="w-16 h-1 bg-coral mx-auto mt-4 rounded-full" />
@@ -72,10 +72,10 @@ export default function Snapshot() {
               }`}
               style={{ transitionDelay: `${i * 120}ms` }}
             >
-              <span className="inline-block gradient-text font-bold text-lg mb-3">
+              <span className="inline-block gradient-text font-bold text-xl mb-3">
                 {item.highlight}
               </span>
-              <p className="text-white/70 leading-relaxed text-sm md:text-base">
+              <p className="text-white/70 leading-relaxed text-base md:text-lg">
                 {item.text}
               </p>
             </div>

@@ -49,27 +49,21 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white shadow-lg py-3"
-          : "bg-transparent py-5"
+          ? "bg-[#0d1b2e] shadow-lg shadow-black/30 py-3"
+          : "bg-[#0d1b2e]/80 backdrop-blur-md py-5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center">
           <Image
-            src="/logo.png"
+            src="/LOGO-2.png"
             alt="ISL Academy"
-            width={45}
-            height={45}
-            className="rounded-lg"
+            width={240}
+            height={120}
+            quality={100}
+            className="object-contain h-20 w-auto"
           />
-          <span
-            className={`font-bold text-lg hidden sm:block transition-colors duration-300 ${
-              scrolled ? "text-navy" : "text-white"
-            }`}
-          >
-            ISL Academy
-          </span>
         </Link>
 
         {/* Desktop Nav */}
@@ -82,8 +76,6 @@ export default function Navbar() {
               className={`text-sm font-medium transition-colors duration-200 hover:text-coral ${
                 activeSection === link.href.slice(1)
                   ? "text-coral"
-                  : scrolled
-                  ? "text-text-dark"
                   : "text-white/90"
               }`}
             >
@@ -108,9 +100,7 @@ export default function Navbar() {
           <span
             className={`block w-6 h-0.5 transition-all duration-300 ${
               mobileOpen
-                ? "rotate-45 translate-y-2 bg-navy"
-                : scrolled
-                ? "bg-navy"
+                ? "rotate-45 translate-y-2 bg-white"
                 : "bg-white"
             }`}
           />
@@ -118,17 +108,13 @@ export default function Navbar() {
             className={`block w-6 h-0.5 transition-all duration-300 ${
               mobileOpen
                 ? "opacity-0"
-                : scrolled
-                ? "bg-navy"
                 : "bg-white"
             }`}
           />
           <span
             className={`block w-6 h-0.5 transition-all duration-300 ${
               mobileOpen
-                ? "-rotate-45 -translate-y-2 bg-navy"
-                : scrolled
-                ? "bg-navy"
+                ? "-rotate-45 -translate-y-2 bg-white"
                 : "bg-white"
             }`}
           />

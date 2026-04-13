@@ -17,10 +17,10 @@ function CounterCard({ value, label, delay }: { value: number; label: string; de
       className="bg-white rounded-2xl p-7 border border-gray-100 shadow-sm text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <span ref={ref} className="gradient-text text-5xl md:text-6xl font-extrabold block mb-3">
+      <span ref={ref} className="gradient-text text-6xl md:text-8xl font-extrabold block mb-3">
         {count}%
       </span>
-      <p className="text-text-medium text-sm font-medium leading-snug">{label}</p>
+      <p className="text-text-medium text-base font-medium leading-snug">{label}</p>
       {/* Progress bar */}
       <div className="mt-4 w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
         <div
@@ -50,11 +50,11 @@ export default function Assessment() {
           <span className="text-coral text-sm font-semibold uppercase tracking-widest">
             Evaluation
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark mt-3">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-text-dark mt-3 leading-tight">
             How You&apos;ll Be Evaluated
           </h2>
           <div className="w-16 h-1 bg-coral mx-auto mt-4 rounded-full" />
-          <p className="text-text-medium mt-6 text-lg">No Exams!</p>
+          
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">

@@ -1,34 +1,36 @@
 "use client";
 import { useInView } from "@/hooks/useInView";
+import { Brain, MessageCircle, Mic, Lightbulb, Wallet, Target } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-const modules = [
+const modules: { icon: LucideIcon; title: string; desc: string }[] = [
   {
-    icon: "🧠",
+    icon: Brain,
     title: "Self, Society & Leadership",
     desc: "Building self-awareness, values, ethics, civic responsibility, leadership fundamentals, and strong leadership presence",
   },
   {
-    icon: "💬",
+    icon: MessageCircle,
     title: "Communication Skills",
     desc: "Verbal and non-verbal communication, body language, listening, everyday and professional English",
   },
   {
-    icon: "🎤",
+    icon: Mic,
     title: "Public Speaking & Confidence",
     desc: "Overcome stage fear, deliver structured speeches, participate in group presentations",
   },
   {
-    icon: "💡",
+    icon: Lightbulb,
     title: "Business Awareness & Entrepreneurship",
     desc: "Strategic thinking, decision-making, business fundamentals, ethics, idea-to-concept development",
   },
   {
-    icon: "💰",
+    icon: Wallet,
     title: "Financial Literacy & Aptitude",
     desc: "Money management, saving and budgeting habits, logical thinking, real-life financial decision-making",
   },
   {
-    icon: "🎯",
+    icon: Target,
     title: "Advanced & Elective Learning",
     desc: "Strategic thinking, leadership presence, impact management, personal branding, professional presence",
   },
@@ -54,11 +56,11 @@ export default function CoreModules() {
           <span className="text-coral text-sm font-semibold uppercase tracking-widest">
             Curriculum
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark mt-3">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-text-dark mt-3 leading-tight">
             Core Modules
           </h2>
           <div className="w-16 h-1 bg-coral mx-auto mt-4 rounded-full" />
-          <p className="text-text-medium mt-6 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-text-medium text-base md:text-lg mt-6 max-w-2xl mx-auto leading-relaxed">
             Developing confident, capable, and future-ready individuals through
             personal growth, professional skills, and leadership training
           </p>
@@ -78,13 +80,13 @@ export default function CoreModules() {
               {/* Coral left accent on hover */}
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-coral scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-center rounded-full" />
 
-              <div className="w-14 h-14 flex items-center justify-center bg-navy/5 rounded-2xl text-2xl mb-5 group-hover:bg-coral/10 transition-colors duration-300">
-                {mod.icon}
+              <div className="w-14 h-14 flex items-center justify-center bg-navy/5 rounded-2xl mb-5 group-hover:bg-coral/10 transition-colors duration-300">
+                <mod.icon className="w-7 h-7 text-coral" strokeWidth={1.5} />
               </div>
-              <h3 className="font-bold text-lg text-text-dark mb-3 group-hover:text-coral transition-colors duration-300">
+              <h3 className="font-bold text-xl text-text-dark mb-3 group-hover:text-coral transition-colors duration-300">
                 {mod.title}
               </h3>
-              <p className="text-text-medium text-sm leading-relaxed">
+              <p className="text-text-medium text-base leading-relaxed">
                 {mod.desc}
               </p>
             </div>
