@@ -7,7 +7,6 @@ const highlights: { label: string; icon: LucideIcon }[] = [
   { label: "Ages 16+", icon: GraduationCap },
   { label: "9 Core Areas", icon: BookOpen },
   { label: "Year-Round Program", icon: Calendar },
-  { label: "No Exams", icon: CheckCircle },
   { label: "Activity-Based", icon: Target },
   { label: "June to March", icon: CalendarDays },
 ];
