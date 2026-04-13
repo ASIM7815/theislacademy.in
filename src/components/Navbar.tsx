@@ -13,19 +13,24 @@ const navLinks = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
+    let lastY = window.scrollY;
     const onScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const currentY = window.scrollY;
+      setScrolled(currentY > 50);
+      setHidden(currentY > lastY && currentY > 100);
+      lastY = currentY;
 
       const sections = document.querySelectorAll("section[id]");
       let current = "home";
       sections.forEach((section) => {
         const el = section as HTMLElement;
         const top = el.offsetTop - 120;
-        if (window.scrollY >= top) {
+        if (currentY >= top) {
           current = el.id;
         }
       });
@@ -48,6 +53,8 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        hidden ? "-translate-y-full" : "translate-y-0"
+      } ${
         scrolled
           ? "bg-[#0d1b2e] shadow-lg shadow-black/30 py-3"
           : "bg-[#0d1b2e]/80 backdrop-blur-md py-5"
