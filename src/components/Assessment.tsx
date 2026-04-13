@@ -54,7 +54,7 @@ export default function Assessment() {
             How You&apos;ll Be Evaluated
           </h2>
           <div className="w-16 h-1 bg-coral mx-auto mt-4 rounded-full" />
-          
+          <p className="text-text-medium mt-6 text-xl font-semibold">No Exams!</p>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
