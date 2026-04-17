@@ -105,7 +105,7 @@ export default function Hero() {
                 src={card.img}
                 alt={card.label}
                 fill
-                className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                className="object-contain transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 640px) 100vw, 33vw"
                 priority={i === 0}
               />
