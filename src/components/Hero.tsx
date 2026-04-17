@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { GraduationCap, BookOpen, Calendar, Target, CalendarDays } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 const cards = [
   {
@@ -26,12 +28,25 @@ const cards = [
   },
 ];
 
+const highlights: { label: string; icon: LucideIcon }[] = [
+  { label: "Ages 16+", icon: GraduationCap },
+  { label: "9 Core Areas", icon: BookOpen },
+  { label: "Year-Round Program", icon: Calendar },
+  { label: "Activity-Based", icon: Target },
+  { label: "June to March", icon: CalendarDays },
+];
+
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Auto-scroll to About section after 3 seconds
+    const scrollTimer = setTimeout(() => {
+      document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
+    }, 3000);
+
     const cardEls = containerRef.current?.querySelectorAll<HTMLElement>(".hero-card");
-    if (!cardEls) return;
+    if (!cardEls) return () => clearTimeout(scrollTimer);
 
     const handlers: Array<{ el: HTMLElement; move: (e: MouseEvent) => void; leave: () => void }> = [];
 
@@ -59,10 +74,13 @@ export default function Hero() {
       handlers.push({ el, move, leave });
     });
 
-    return () => handlers.forEach(({ el, move, leave }) => {
-      el.removeEventListener("mousemove", move);
-      el.removeEventListener("mouseleave", leave);
-    });
+    return () => {
+      clearTimeout(scrollTimer);
+      handlers.forEach(({ el, move, leave }) => {
+        el.removeEventListener("mousemove", move);
+        el.removeEventListener("mouseleave", leave);
+      });
+    };
   }, []);
 
   return (
@@ -105,7 +123,7 @@ export default function Hero() {
                 src={card.img}
                 alt={card.label}
                 fill
-                className="object-contain transition-transform duration-700 group-hover:scale-105"
+                className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 640px) 100vw, 33vw"
                 priority={i === 0}
               />
@@ -130,6 +148,28 @@ export default function Hero() {
         </div>
       </div>
 
+      {/* Highlight Bar */}
+      <div className="relative z-10 max-w-7xl mx-auto px-5 pb-12">
+        <p className="text-center text-white/50 text-sm font-medium mb-6 uppercase tracking-widest">
+          Integrated Learning Track
+        </p>
+        <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+          {highlights.map((item, i) => (
+            <div
+              key={item.label}
+              className="flex items-center gap-2 bg-white/[0.06] px-5 py-2.5 rounded-full border border-white/10"
+              style={{
+                animation: `hero-card-in 0.9s cubic-bezier(0.16,1,0.3,1) ${0.6 + i * 0.1}s both`,
+              }}
+            >
+              <item.icon className="w-5 h-5 text-coral" strokeWidth={1.5} />
+              <span className="text-base font-semibold text-white/80">
+                {item.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
 
     </section>
   );
