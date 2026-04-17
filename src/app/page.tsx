@@ -11,10 +11,12 @@ import Registration from "@/components/Registration";
 import Location from "@/components/Location";
 import MissionStatement from "@/components/MissionStatement";
 import Footer from "@/components/Footer";
+import ScrollManager from "@/components/ScrollManager";
 
 export default function Home() {
   return (
     <>
+      <ScrollManager />
       <Navbar />
       <main>
         <Hero />
