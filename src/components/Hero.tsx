@@ -94,7 +94,7 @@ export default function Hero() {
               }}
               className={`hero-card group relative rounded-3xl overflow-hidden cursor-pointer block shadow-2xl ${card.shadowColor}`}
               style={{
-                aspectRatio: "3/5",
+                aspectRatio: "9/16",
                 transformStyle: "preserve-3d",
                 transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s ease",
                 animation: `hero-card-in 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 0.18}s both`,
