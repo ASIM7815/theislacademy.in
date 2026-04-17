@@ -4,21 +4,21 @@ import Image from "next/image";
 
 const cards = [
   {
-    img: "/WHO WE ARE.jpg",
+    img: "/A1.jpg",
     href: "#about",
     label: "Who We Are",
     shadowColor: "shadow-blue-500/30",
     glow: "from-blue-500/30 to-transparent",
   },
   {
-    img: "/FORHOM.jpg",
+    img: "/A2.jpg",
     href: "#about",
     label: "For Whom",
     shadowColor: "shadow-red-500/30",
     glow: "from-red-500/30 to-transparent",
   },
   {
-    img: "/WHERE.jpg",
+    img: "/A3.jpg",
     href: "#register",
     label: "Where & When",
     shadowColor: "shadow-emerald-500/30",
