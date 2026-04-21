@@ -1,33 +1,37 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const cards = [
   {
-    img: "/A1.jpg",
+    images: ["/A1.jpg", "/slide1.jpg", "/slide4.jpg"],
     href: "#about",
     label: "Who We Are",
     shadowColor: "shadow-blue-500/30",
     glow: "from-blue-500/30 to-transparent",
+    bgColor: '#1a2b4a',
   },
   {
-    img: "/A2.jpg",
+    images: ["/A2.jpg", "/slide2.jpg", "/slide5.jpg"],
     href: "#about",
     label: "For Whom",
     shadowColor: "shadow-red-500/30",
     glow: "from-red-500/30 to-transparent",
+    bgColor: '#4a1a1a',
   },
   {
-    img: "/A3.jpg",
+    images: ["/A3.jpg", "/slide3.jpg", "/slide6.jpg"],
     href: "#register",
     label: "Where & When",
     shadowColor: "shadow-emerald-500/30",
     glow: "from-emerald-500/30 to-transparent",
+    bgColor: '#1a4a2b',
   },
 ];
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState([0, 0, 0]);
 
   useEffect(() => {
     const cardEls = containerRef.current?.querySelectorAll<HTMLElement>(".hero-card");
@@ -65,6 +69,17 @@ export default function Hero() {
     });
   }, []);
 
+  // Auto-rotate images every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex(prev => 
+        prev.map((index, cardIndex) => (index + 1) % cards[cardIndex].images.length)
+      );
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section
       id="home"
@@ -98,18 +113,23 @@ export default function Hero() {
                 transformStyle: "preserve-3d",
                 transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s ease",
                 animation: `hero-card-in 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 0.18}s both`,
-                backgroundColor: i === 0 ? '#1a2b4a' : i === 1 ? '#4a1a1a' : '#1a4a2b',
+                backgroundColor: card.bgColor,
               }}
             >
-              {/* Full bleed image */}
-              <Image
-                src={card.img}
-                alt={card.label}
-                fill
-                className="object-contain transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 640px) 100vw, 33vw"
-                priority={i === 0}
-              />
+              {/* Full bleed image with fade transition */}
+              {card.images.map((img, imgIndex) => (
+                <Image
+                  key={img}
+                  src={img}
+                  alt={card.label}
+                  fill
+                  className={`object-contain transition-all duration-1000 group-hover:scale-105 ${
+                    currentImageIndex[i] === imgIndex ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  sizes="(max-width: 640px) 100vw, 33vw"
+                  priority={i === 0 && imgIndex === 0}
+                />
+              ))}
 
               {/* Mouse-follow shine */}
               <div className="card-shine absolute inset-0 z-30 pointer-events-none rounded-3xl opacity-0 transition-opacity duration-300" />
