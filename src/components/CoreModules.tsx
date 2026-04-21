@@ -1,6 +1,6 @@
 "use client";
 import { useInView } from "@/hooks/useInView";
-import { Brain, MessageCircle, Mic, Lightbulb, Wallet, Target } from "lucide-react";
+import { Brain, MessageCircle, Mic, Lightbulb, Wallet, Target, Sparkles, Users, TrendingUp, Presentation } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const modules: { icon: LucideIcon; title: string; desc: string }[] = [
@@ -33,6 +33,26 @@ const modules: { icon: LucideIcon; title: string; desc: string }[] = [
     icon: Target,
     title: "Advanced & Elective Learning",
     desc: "Strategic thinking, leadership presence, impact management, personal branding, professional presence",
+  },
+  {
+    icon: Sparkles,
+    title: "Idea Validation",
+    desc: "Understanding the real problem, testing it with users, and refining the idea based on genuine feedback.",
+  },
+  {
+    icon: Users,
+    title: "Incubation / Mentorship",
+    desc: "Guided support from experienced mentors to shape, strengthen, and confidently develop the idea.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Business Model & Strategy (Core Area)",
+    desc: "Designing a clear, sustainable, and scalable approach to revenue, growth, and market positioning.",
+  },
+  {
+    icon: Presentation,
+    title: "Investor Pitch / Fundraising",
+    desc: "Presenting the idea with clarity, credibility, and vision to attract funding and strategic support.",
   },
 ];
 

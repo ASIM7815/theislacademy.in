@@ -41,15 +41,15 @@ export default function HowDifferent() {
             }`}
           >
             {/* Accent bar */}
-            <div className="absolute -left-4 top-8 bottom-8 w-1.5 bg-coral rounded-full" />
+            <div className="hidden lg:block absolute -left-4 top-8 bottom-8 w-1.5 bg-coral rounded-full" />
 
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-navy/10 ml-4">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-navy/10 lg:ml-4 w-64 sm:w-72 md:w-80 lg:w-96 mx-auto lg:mx-0">
               <Image
                 src="/stu1.png"
                 alt="ISL Academy Student"
-                width={600}
-                height={700}
-                className="w-full h-full object-cover"
+                width={400}
+                height={500}
+                className="w-full h-auto object-cover"
                 priority
               />
               {/* Floating badge */}

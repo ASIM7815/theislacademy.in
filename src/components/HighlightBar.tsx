@@ -5,7 +5,7 @@ import type { LucideIcon } from "lucide-react";
 
 const highlights: { label: string; icon: LucideIcon }[] = [
   { label: "Ages 16+", icon: GraduationCap },
-  { label: "9 Core Areas", icon: BookOpen },
+  { label: "10 Core Areas", icon: BookOpen },
   { label: "Year-Round Program", icon: Calendar },
   { label: "Activity-Based", icon: Target },
   { label: "June to March", icon: CalendarDays },
