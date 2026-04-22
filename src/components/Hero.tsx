@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const cards = [
   {
-    images: ["/A1.jpg", "/slide1.jpg", "/slide4.jpg"],
+    images: ["/A1.jpg", "/slide1.jpg", "/replace.jpeg"],
     href: "#about",
     label: "Who We Are",
     shadowColor: "shadow-blue-500/30",
@@ -69,13 +69,13 @@ export default function Hero() {
     });
   }, []);
 
-  // Auto-rotate images every 4 seconds
+  // Auto-rotate images every 10 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex(prev => 
         prev.map((index, cardIndex) => (index + 1) % cards[cardIndex].images.length)
       );
-    }, 4000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);

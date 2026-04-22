@@ -12,11 +12,13 @@ import Location from "@/components/Location";
 import MissionStatement from "@/components/MissionStatement";
 import Footer from "@/components/Footer";
 import ScrollManager from "@/components/ScrollManager";
+import RegistrationPopup from "@/components/RegistrationPopup";
 
 export default function Home() {
   return (
     <>
       <ScrollManager />
+      <RegistrationPopup />
       <Navbar />
       <main>
         <Hero />
