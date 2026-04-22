@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   title: "ISL Business Leadership & Training Academy",
   description:
     "Empowering students with essential business, leadership, and communication skills. Learn Business. Build Business.",
+  icons: {
+    icon: "/LOGO.png",
+    shortcut: "/LOGO.png",
+    apple: "/LOGO.png",
+  },
 };
 
 export default function RootLayout({
