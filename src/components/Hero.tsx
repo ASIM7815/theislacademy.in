@@ -12,7 +12,7 @@ const cards = [
     bgColor: '#1a2b4a',
   },
   {
-    images: ["/new2.jpg", "/replace.jpeg", "/slide5.jpg"],
+    images: ["/add2.jpg", "/replace.jpeg", "/slide5.jpg"],
     href: "#about",
     label: "For Whom",
     shadowColor: "shadow-red-500/30",
@@ -20,7 +20,7 @@ const cards = [
     bgColor: '#4a1a1a',
   },
   {
-    images: ["/new3.jpg", "/slide3.jpg", "/slide6.jpg"],
+    images: ["/add1.jpg", "/slide3.jpg", "/slide6.jpg"],
     href: "#register",
     label: "Where & When",
     shadowColor: "shadow-emerald-500/30",
