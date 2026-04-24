@@ -27,7 +27,7 @@ export default function AdminDashboard() {
   const [filter, setFilter] = useState<"all" | "popup" | "landing_page">("all");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handlePasswordSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Hardcoded password for reliability
     const correctPassword = "ISLACADEMY7815@islec#";
