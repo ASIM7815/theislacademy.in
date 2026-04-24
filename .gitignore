@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -40,3 +41,16 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .claude/
+
+# Documentation with sensitive keys
+QUICK_FIX_STEPS.md
+DEPLOYMENT_FIX.md
+VERCEL_CHECKLIST.md
+VERCEL_DEPLOYMENT.md
+SUPABASE_SETUP.md
+ADMIN_PASSWORD.md
+ADMIN_ACCESS.md
+FINAL_SETUP_SUMMARY.md
+SETUP_COMPLETE.md
+COMMIT_SUMMARY.md
+PUSH_INSTRUCTIONS.md
