@@ -75,13 +75,17 @@ export default function AdminDashboard() {
         .channel('registrations-changes')
         .on('postgres_changes', 
           { event: '*', schema: 'public', table: 'registrations' },
-          () => {
+          (payload) => {
+            console.log('Real-time update received:', payload);
             fetchRegistrations();
           }
         )
-        .subscribe();
+        .subscribe((status) => {
+          console.log('Subscription status:', status);
+        });
 
       return () => {
+        console.log('Cleaning up subscription');
         supabase.removeChannel(channel);
       };
     }
@@ -90,16 +94,25 @@ export default function AdminDashboard() {
   const fetchRegistrations = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
+      console.log('Fetching registrations from Supabase...');
+      
       const { data, error } = await supabase
         .from("registrations")
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+      
+      console.log('Fetched registrations:', data?.length || 0);
       setRegistrations(data || []);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error fetching registrations:", err);
-      setError("Failed to load registrations");
+      setError(err.message || "Failed to load registrations");
     } finally {
       setLoading(false);
     }
@@ -191,7 +204,6 @@ export default function AdminDashboard() {
   };
 
   const dailyData = getRegistrationsByDay();
-  const maxDaily = Math.max(...dailyData.map(([, count]) => count), 1);
   const sourceData = getSourceDistribution();
   const educationData = getEducationDistribution();
 
