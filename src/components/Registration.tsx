@@ -3,21 +3,64 @@ import { useState, FormEvent } from "react";
 import { useInView } from "@/hooks/useInView";
 import { GraduationCap, Calendar, CheckCircle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export default function Registration() {
   const { ref, isVisible } = useInView(0.1);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   void submitted;
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
     const phone = formData.get("phone") as string;
     const education = formData.get("education") as string;
-    const message = `Hi ISL Academy, I'd like to register for the program.%0A%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AEducation: ${encodeURIComponent(education)}`;
-    window.open(`https://wa.me/918897860944?text=${message}`, "_blank");
-    e.currentTarget.reset();
+    const message = formData.get("message") as string;
+
+    try {
+      // Save to Supabase
+      const { error: supabaseError } = await supabase
+        .from("registrations")
+        .insert([
+          {
+            name,
+            email,
+            phone,
+            education,
+            message: message || null,
+            source: "landing_page",
+          },
+        ]);
+
+      if (supabaseError) {
+        console.error("Supabase error:", supabaseError);
+        setError("Failed to save registration. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Open WhatsApp
+      const whatsappMessage = `Hi ISL Academy, I'd like to register for the program.%0A%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AEducation: ${encodeURIComponent(education)}`;
+      window.open(`https://wa.me/918897860944?text=${whatsappMessage}`, "_blank");
+      
+      e.currentTarget.reset();
+      setSubmitted(true);
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (err) {
+      console.error("Error:", err);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -70,9 +113,15 @@ export default function Registration() {
             }`}
           >
             <div className="bg-beige rounded-2xl p-8 md:p-10 border border-gray-100">
-              {false && submitted && (
+              {submitted && (
                 <div className="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4 mb-6 text-sm font-medium">
                   Thank you for registering! We will contact you soon.
+                </div>
+              )}
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 mb-6 text-sm">
+                  {error}
                 </div>
               )}
 
@@ -166,9 +215,10 @@ export default function Registration() {
 
                 <button
                   type="submit"
-                  className="w-full bg-coral hover:bg-coral-dark text-white py-3.5 rounded-xl font-semibold text-base transition-all duration-200 hover:shadow-lg hover:shadow-coral/30 mt-2"
+                  disabled={isSubmitting}
+                  className="w-full bg-coral hover:bg-coral-dark text-white py-3.5 rounded-xl font-semibold text-base transition-all duration-200 hover:shadow-lg hover:shadow-coral/30 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Register Now
+                  {isSubmitting ? "Submitting..." : "Register Now"}
                 </button>
               </form>
             </div>

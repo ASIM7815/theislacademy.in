@@ -2,10 +2,13 @@
 import { useState, useEffect, FormEvent } from "react";
 import { GraduationCap, Calendar, CheckCircle, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export default function RegistrationPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   void submitted;
 
   useEffect(() => {
@@ -24,16 +27,51 @@ export default function RegistrationPopup() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
     const phone = formData.get("phone") as string;
     const education = formData.get("education") as string;
-    const message = `Hi ISL Academy, I'd like to register for the program.%0A%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AEducation: ${encodeURIComponent(education)}`;
-    window.open(`https://wa.me/918897860944?text=${message}`, "_blank");
-    e.currentTarget.reset();
-    setIsOpen(false);
+
+    try {
+      // Save to Supabase
+      const { error: supabaseError } = await supabase
+        .from("registrations")
+        .insert([
+          {
+            name,
+            email,
+            phone,
+            education,
+            source: "popup",
+          },
+        ]);
+
+      if (supabaseError) {
+        console.error("Supabase error:", supabaseError);
+        setError("Failed to save registration. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Open WhatsApp
+      const message = `Hi ISL Academy, I'd like to register for the program.%0A%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AEducation: ${encodeURIComponent(education)}`;
+      window.open(`https://wa.me/918897860944?text=${message}`, "_blank");
+      
+      e.currentTarget.reset();
+      setIsOpen(false);
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Error:", err);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -92,6 +130,13 @@ export default function RegistrationPopup() {
                 </div>
               ))}
             </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 mb-4 text-sm">
+                {error}
+              </div>
+            )}
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -168,9 +213,10 @@ export default function RegistrationPopup() {
 
               <button
                 type="submit"
-                className="w-full bg-coral hover:bg-coral-dark text-white py-3.5 rounded-xl font-semibold text-base transition-all duration-200 hover:shadow-lg hover:shadow-coral/30 mt-2"
+                disabled={isSubmitting}
+                className="w-full bg-coral hover:bg-coral-dark text-white py-3.5 rounded-xl font-semibold text-base transition-all duration-200 hover:shadow-lg hover:shadow-coral/30 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Register Now
+                {isSubmitting ? "Submitting..." : "Register Now"}
               </button>
             </form>
           </div>
