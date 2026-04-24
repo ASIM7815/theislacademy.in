@@ -214,10 +214,22 @@ export default function AdminDashboard() {
       {
         label: 'Registrations',
         data: dailyData.map(([, count]) => count),
-        backgroundColor: 'rgba(255, 107, 107, 0.8)',
+        backgroundColor: (context: any) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+          gradient.addColorStop(0, 'rgba(255, 107, 107, 0.9)');
+          gradient.addColorStop(1, 'rgba(255, 107, 107, 0.6)');
+          return gradient;
+        },
         borderColor: 'rgba(255, 107, 107, 1)',
-        borderWidth: 2,
-        borderRadius: 8,
+        borderWidth: 3,
+        borderRadius: 12,
+        borderSkipped: false,
+        barThickness: 40,
+        shadowOffsetX: 0,
+        shadowOffsetY: 8,
+        shadowBlur: 20,
+        shadowColor: 'rgba(255, 107, 107, 0.4)',
       },
     ],
   };
@@ -230,11 +242,18 @@ export default function AdminDashboard() {
         display: false,
       },
       tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        padding: 12,
-        borderRadius: 8,
-        titleFont: { size: 14, weight: 'bold' as const },
-        bodyFont: { size: 13 },
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        padding: 16,
+        borderRadius: 12,
+        titleFont: { size: 15, weight: 'bold' as const },
+        bodyFont: { size: 14 },
+        boxPadding: 6,
+        usePointStyle: true,
+        callbacks: {
+          label: function(context: any) {
+            return `Registrations: ${context.parsed.y}`;
+          }
+        }
       },
     },
     scales: {
@@ -242,20 +261,33 @@ export default function AdminDashboard() {
         beginAtZero: true,
         ticks: {
           stepSize: 1,
-          font: { size: 12 },
+          font: { size: 12, weight: 'bold' as const },
+          color: '#64748b',
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)',
+          color: 'rgba(148, 163, 184, 0.1)',
+          lineWidth: 1,
+        },
+        border: {
+          display: false,
         },
       },
       x: {
         ticks: {
-          font: { size: 11 },
+          font: { size: 11, weight: 'bold' as const },
+          color: '#64748b',
         },
         grid: {
           display: false,
         },
+        border: {
+          display: false,
+        },
       },
+    },
+    animation: {
+      duration: 1500,
+      easing: 'easeInOutQuart' as const,
     },
   };
 
@@ -265,14 +297,16 @@ export default function AdminDashboard() {
       {
         data: [sourceData.popup.count, sourceData.landing.count],
         backgroundColor: [
-          'rgba(139, 92, 246, 0.9)',
-          'rgba(34, 197, 94, 0.9)',
+          'rgba(139, 92, 246, 0.95)',
+          'rgba(34, 197, 94, 0.95)',
         ],
         borderColor: [
           'rgba(139, 92, 246, 1)',
           'rgba(34, 197, 94, 1)',
         ],
-        borderWidth: 2,
+        borderWidth: 4,
+        hoverOffset: 20,
+        offset: 10,
       },
     ],
   };
@@ -284,16 +318,21 @@ export default function AdminDashboard() {
       legend: {
         position: 'bottom' as const,
         labels: {
-          padding: 15,
-          font: { size: 13, weight: 'bold' as const },
+          padding: 20,
+          font: { size: 14, weight: 'bold' as const },
           usePointStyle: true,
           pointStyle: 'circle',
+          boxWidth: 12,
+          boxHeight: 12,
         },
       },
       tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        padding: 12,
-        borderRadius: 8,
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        padding: 16,
+        borderRadius: 12,
+        titleFont: { size: 15, weight: 'bold' as const },
+        bodyFont: { size: 14 },
+        boxPadding: 6,
         callbacks: {
           label: function(context: any) {
             const label = context.label || '';
@@ -305,6 +344,12 @@ export default function AdminDashboard() {
         }
       },
     },
+    animation: {
+      animateRotate: true,
+      animateScale: true,
+      duration: 1500,
+      easing: 'easeInOutQuart' as const,
+    },
   };
 
   const educationChartData = {
@@ -313,11 +358,11 @@ export default function AdminDashboard() {
       {
         data: educationData.map(edu => edu.count),
         backgroundColor: [
-          'rgba(59, 130, 246, 0.9)',
-          'rgba(139, 92, 246, 0.9)',
-          'rgba(236, 72, 153, 0.9)',
-          'rgba(251, 146, 60, 0.9)',
-          'rgba(20, 184, 166, 0.9)',
+          'rgba(59, 130, 246, 0.95)',
+          'rgba(139, 92, 246, 0.95)',
+          'rgba(236, 72, 153, 0.95)',
+          'rgba(251, 146, 60, 0.95)',
+          'rgba(20, 184, 166, 0.95)',
         ],
         borderColor: [
           'rgba(59, 130, 246, 1)',
@@ -326,7 +371,9 @@ export default function AdminDashboard() {
           'rgba(251, 146, 60, 1)',
           'rgba(20, 184, 166, 1)',
         ],
-        borderWidth: 2,
+        borderWidth: 4,
+        hoverOffset: 25,
+        offset: 15,
       },
     ],
   };
@@ -395,15 +442,28 @@ export default function AdminDashboard() {
         label: 'Daily Registrations',
         data: getLast30DaysData(),
         fill: true,
-        backgroundColor: 'rgba(255, 107, 107, 0.1)',
+        backgroundColor: (context: any) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+          gradient.addColorStop(0, 'rgba(255, 107, 107, 0.3)');
+          gradient.addColorStop(1, 'rgba(255, 107, 107, 0.05)');
+          return gradient;
+        },
         borderColor: 'rgba(255, 107, 107, 1)',
-        borderWidth: 3,
+        borderWidth: 4,
         tension: 0.4,
         pointBackgroundColor: 'rgba(255, 107, 107, 1)',
         pointBorderColor: '#fff',
-        pointBorderWidth: 2,
-        pointRadius: 4,
-        pointHoverRadius: 6,
+        pointBorderWidth: 3,
+        pointRadius: 6,
+        pointHoverRadius: 9,
+        pointHoverBackgroundColor: 'rgba(255, 107, 107, 1)',
+        pointHoverBorderColor: '#fff',
+        pointHoverBorderWidth: 4,
+        shadowOffsetX: 0,
+        shadowOffsetY: 4,
+        shadowBlur: 15,
+        shadowColor: 'rgba(255, 107, 107, 0.5)',
       },
     ],
   };
@@ -416,9 +476,13 @@ export default function AdminDashboard() {
         display: false,
       },
       tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        padding: 12,
-        borderRadius: 8,
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        padding: 16,
+        borderRadius: 12,
+        titleFont: { size: 15, weight: 'bold' as const },
+        bodyFont: { size: 14 },
+        boxPadding: 6,
+        usePointStyle: true,
       },
     },
     scales: {
@@ -426,22 +490,39 @@ export default function AdminDashboard() {
         beginAtZero: true,
         ticks: {
           stepSize: 1,
-          font: { size: 11 },
+          font: { size: 12, weight: 'bold' as const },
+          color: '#64748b',
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)',
+          color: 'rgba(148, 163, 184, 0.1)',
+          lineWidth: 1,
+        },
+        border: {
+          display: false,
         },
       },
       x: {
         ticks: {
-          font: { size: 10 },
+          font: { size: 10, weight: 'bold' as const },
           maxRotation: 45,
           minRotation: 45,
+          color: '#64748b',
         },
         grid: {
           display: false,
         },
+        border: {
+          display: false,
+        },
       },
+    },
+    interaction: {
+      mode: 'index' as const,
+      intersect: false,
+    },
+    animation: {
+      duration: 2000,
+      easing: 'easeInOutQuart' as const,
     },
   };
 
@@ -627,32 +708,44 @@ export default function AdminDashboard() {
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* 30-Day Trend Line Chart */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2">
-            <h3 className="text-lg font-bold text-text-dark mb-4">Registration Trend (Last 30 Days)</h3>
+          <div className="bg-white rounded-2xl p-6 border border-gray-100 lg:col-span-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)] transition-shadow duration-300">
+            <h3 className="text-lg font-bold text-text-dark mb-4 flex items-center gap-2">
+              <span className="w-1 h-6 bg-gradient-to-b from-coral to-coral-dark rounded-full"></span>
+              Registration Trend (Last 30 Days)
+            </h3>
             <div className="h-64">
               <Line data={trendChartData} options={trendChartOptions} />
             </div>
           </div>
 
           {/* Daily Registrations Bar Chart */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <h3 className="text-lg font-bold text-text-dark mb-4">Last 7 Days</h3>
+          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)] transition-shadow duration-300">
+            <h3 className="text-lg font-bold text-text-dark mb-4 flex items-center gap-2">
+              <span className="w-1 h-6 bg-gradient-to-b from-coral to-coral-dark rounded-full"></span>
+              Last 7 Days
+            </h3>
             <div className="h-64">
               <Bar data={dailyChartData} options={dailyChartOptions} />
             </div>
           </div>
 
           {/* Source Distribution Doughnut Chart */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <h3 className="text-lg font-bold text-text-dark mb-4">Registration Source</h3>
+          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)] transition-shadow duration-300">
+            <h3 className="text-lg font-bold text-text-dark mb-4 flex items-center gap-2">
+              <span className="w-1 h-6 bg-gradient-to-b from-purple-500 to-green-500 rounded-full"></span>
+              Registration Source
+            </h3>
             <div className="h-64 flex items-center justify-center">
               <Doughnut data={sourceChartData} options={sourceChartOptions} />
             </div>
           </div>
 
           {/* Education Distribution Pie Chart */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2">
-            <h3 className="text-lg font-bold text-text-dark mb-4">Education Level Distribution</h3>
+          <div className="bg-white rounded-2xl p-6 border border-gray-100 lg:col-span-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)] transition-shadow duration-300">
+            <h3 className="text-lg font-bold text-text-dark mb-4 flex items-center gap-2">
+              <span className="w-1 h-6 bg-gradient-to-b from-blue-500 to-teal-500 rounded-full"></span>
+              Education Level Distribution
+            </h3>
             <div className="h-80 flex items-center justify-center">
               <Doughnut data={educationChartData} options={educationChartOptions} />
             </div>
