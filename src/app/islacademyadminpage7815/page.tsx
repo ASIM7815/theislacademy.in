@@ -2,9 +2,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 
-const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
+export const dynamic = 'force-dynamic';
 
 interface Registration {
   id: string;
@@ -29,13 +28,11 @@ export default function AdminDashboard() {
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Hardcoded password for reliability
     const correctPassword = "ISLACADEMY7815@islec#";
     
     if (password === correctPassword) {
       setIsAuthenticated(true);
       setPasswordError("");
-      localStorage.setItem("admin_authenticated", "true");
     } else {
       setPasswordError("Incorrect password. Please try again.");
       setPassword("");
@@ -43,15 +40,23 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    const isAuth = localStorage.getItem("admin_authenticated");
-    if (isAuth === "true") {
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-  useEffect(() => {
     if (isAuthenticated) {
       fetchRegistrations();
+      
+      // Set up real-time subscription
+      const channel = supabase
+        .channel('registrations-changes')
+        .on('postgres_changes', 
+          { event: '*', schema: 'public', table: 'registrations' },
+          () => {
+            fetchRegistrations();
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     }
   }, [isAuthenticated]);
 
@@ -75,7 +80,6 @@ export default function AdminDashboard() {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    localStorage.removeItem("admin_authenticated");
     setPassword("");
   };
 
@@ -132,25 +136,18 @@ export default function AdminDashboard() {
       const date = new Date(reg.created_at).toLocaleDateString();
       dayCount[date] = (dayCount[date] || 0) + 1;
     });
-    return Object.entries(dayCount).sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime());
-  };
-
-  const getRegistrationsByHour = () => {
-    const hourCount: { [key: number]: number } = {};
-    registrations.forEach((reg) => {
-      const hour = new Date(reg.created_at).getHours();
-      hourCount[hour] = (hourCount[hour] || 0) + 1;
-    });
-    return Array.from({ length: 24 }, (_, i) => hourCount[i] || 0);
+    const sorted = Object.entries(dayCount).sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime());
+    return sorted.slice(-7); // Last 7 days
   };
 
   const getSourceDistribution = () => {
     const popup = registrations.filter(r => r.source === "popup").length;
     const landing = registrations.filter(r => r.source === "landing_page").length;
-    return [
-      { value: popup, name: "Popup Form" },
-      { value: landing, name: "Landing Page" }
-    ];
+    const total = registrations.length || 1;
+    return {
+      popup: { count: popup, percent: Math.round((popup / total) * 100) },
+      landing: { count: landing, percent: Math.round((landing / total) * 100) }
+    };
   };
 
   const getEducationDistribution = () => {
@@ -158,109 +155,18 @@ export default function AdminDashboard() {
     registrations.forEach((reg) => {
       eduCount[reg.education] = (eduCount[reg.education] || 0) + 1;
     });
-    return Object.entries(eduCount).map(([name, value]) => ({ name, value }));
+    const total = registrations.length || 1;
+    return Object.entries(eduCount).map(([name, count]) => ({
+      name,
+      count,
+      percent: Math.round((count / total) * 100)
+    }));
   };
 
-  // Chart Options
-  const dailyRegistrationsOption = {
-    title: {
-      text: "Daily Registrations",
-      left: "center",
-      textStyle: { color: "#1a1a2e", fontSize: 18, fontWeight: "bold" }
-    },
-    tooltip: { trigger: "axis" },
-    xAxis: {
-      type: "category",
-      data: getRegistrationsByDay().map(([date]) => date),
-      axisLabel: { rotate: 45, fontSize: 10 }
-    },
-    yAxis: { type: "value" },
-    series: [{
-      data: getRegistrationsByDay().map(([, count]) => count),
-      type: "line",
-      smooth: true,
-      areaStyle: { color: "rgba(233, 69, 96, 0.2)" },
-      lineStyle: { color: "#e94560", width: 3 },
-      itemStyle: { color: "#e94560" }
-    }],
-    grid: { left: "10%", right: "10%", bottom: "20%", top: "15%" }
-  };
-
-  const hourlyRegistrationsOption = {
-    title: {
-      text: "Peak Registration Hours",
-      left: "center",
-      textStyle: { color: "#1a1a2e", fontSize: 18, fontWeight: "bold" }
-    },
-    tooltip: { trigger: "axis" },
-    xAxis: {
-      type: "category",
-      data: Array.from({ length: 24 }, (_, i) => `${i}:00`),
-      axisLabel: { fontSize: 10 }
-    },
-    yAxis: { type: "value" },
-    series: [{
-      data: getRegistrationsByHour(),
-      type: "bar",
-      itemStyle: {
-        color: {
-          type: "linear",
-          x: 0, y: 0, x2: 0, y2: 1,
-          colorStops: [
-            { offset: 0, color: "#e94560" },
-            { offset: 1, color: "#f5a623" }
-          ]
-        }
-      }
-    }],
-    grid: { left: "10%", right: "10%", bottom: "15%", top: "15%" }
-  };
-
-  const sourceDistributionOption = {
-    title: {
-      text: "Registration Source",
-      left: "center",
-      textStyle: { color: "#1a1a2e", fontSize: 18, fontWeight: "bold" }
-    },
-    tooltip: { trigger: "item" },
-    legend: { bottom: "5%", left: "center" },
-    series: [{
-      type: "pie",
-      radius: ["40%", "70%"],
-      avoidLabelOverlap: false,
-      itemStyle: {
-        borderRadius: 10,
-        borderColor: "#fff",
-        borderWidth: 2
-      },
-      label: { show: true, formatter: "{b}: {c} ({d}%)" },
-      data: getSourceDistribution(),
-      color: ["#667eea", "#764ba2"]
-    }]
-  };
-
-  const educationDistributionOption = {
-    title: {
-      text: "Education Level Distribution",
-      left: "center",
-      textStyle: { color: "#1a1a2e", fontSize: 18, fontWeight: "bold" }
-    },
-    tooltip: { trigger: "item" },
-    legend: { bottom: "5%", left: "center" },
-    series: [{
-      type: "pie",
-      radius: "60%",
-      data: getEducationDistribution(),
-      emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: "rgba(0, 0, 0, 0.5)"
-        }
-      },
-      color: ["#f093fb", "#f5576c", "#4facfe", "#00f2fe", "#43e97b"]
-    }]
-  };
+  const dailyData = getRegistrationsByDay();
+  const maxDaily = Math.max(...dailyData.map(([, count]) => count), 1);
+  const sourceData = getSourceDistribution();
+  const educationData = getEducationDistribution();
 
   // Password Login Screen
   if (!isAuthenticated) {
@@ -443,17 +349,78 @@ export default function AdminDashboard() {
 
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Daily Registrations Bar Chart */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <ReactECharts option={dailyRegistrationsOption} style={{ height: "350px" }} />
+            <h3 className="text-lg font-bold text-text-dark mb-4">Last 7 Days</h3>
+            <div className="space-y-3">
+              {dailyData.map(([date, count]) => (
+                <div key={date} className="flex items-center gap-3">
+                  <div className="text-xs text-text-medium w-20 flex-shrink-0">{date}</div>
+                  <div className="flex-1 bg-gray-100 rounded-full h-8 relative overflow-hidden">
+                    <div 
+                      className="bg-gradient-to-r from-coral to-coral-dark h-full rounded-full flex items-center justify-end pr-3 transition-all duration-500"
+                      style={{ width: `${(count / maxDaily) * 100}%` }}
+                    >
+                      <span className="text-white text-sm font-semibold">{count}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
+
+          {/* Source Distribution */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <ReactECharts option={hourlyRegistrationsOption} style={{ height: "350px" }} />
+            <h3 className="text-lg font-bold text-text-dark mb-4">Registration Source</h3>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm font-medium text-text-dark">Popup Form</span>
+                  <span className="text-sm font-bold text-purple-600">{sourceData.popup.count} ({sourceData.popup.percent}%)</span>
+                </div>
+                <div className="w-full bg-gray-100 rounded-full h-6 overflow-hidden">
+                  <div 
+                    className="bg-gradient-to-r from-purple-500 to-purple-700 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${sourceData.popup.percent}%` }}
+                  ></div>
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm font-medium text-text-dark">Landing Page</span>
+                  <span className="text-sm font-bold text-green-600">{sourceData.landing.count} ({sourceData.landing.percent}%)</span>
+                </div>
+                <div className="w-full bg-gray-100 rounded-full h-6 overflow-hidden">
+                  <div 
+                    className="bg-gradient-to-r from-green-500 to-green-700 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${sourceData.landing.percent}%` }}
+                  ></div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <ReactECharts option={sourceDistributionOption} style={{ height: "350px" }} />
-          </div>
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <ReactECharts option={educationDistributionOption} style={{ height: "350px" }} />
+
+          {/* Education Distribution */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2">
+            <h3 className="text-lg font-bold text-text-dark mb-4">Education Level Distribution</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {educationData.map((edu, idx) => {
+                const colors = [
+                  'from-blue-500 to-blue-700',
+                  'from-purple-500 to-purple-700',
+                  'from-pink-500 to-pink-700',
+                  'from-orange-500 to-orange-700',
+                  'from-teal-500 to-teal-700'
+                ];
+                return (
+                  <div key={edu.name} className={`bg-gradient-to-br ${colors[idx % colors.length]} rounded-xl p-4 text-white`}>
+                    <div className="text-sm opacity-90 mb-1 capitalize">{edu.name}</div>
+                    <div className="text-3xl font-bold">{edu.count}</div>
+                    <div className="text-sm opacity-90 mt-1">{edu.percent}% of total</div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
