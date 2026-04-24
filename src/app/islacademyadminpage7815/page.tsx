@@ -2,6 +2,33 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+} from 'chart.js';
+import { Bar, Doughnut, Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 export const dynamic = 'force-dynamic';
 
@@ -167,6 +194,244 @@ export default function AdminDashboard() {
   const maxDaily = Math.max(...dailyData.map(([, count]) => count), 1);
   const sourceData = getSourceDistribution();
   const educationData = getEducationDistribution();
+
+  // Chart.js Data Configurations
+  const dailyChartData = {
+    labels: dailyData.map(([date]) => date),
+    datasets: [
+      {
+        label: 'Registrations',
+        data: dailyData.map(([, count]) => count),
+        backgroundColor: 'rgba(255, 107, 107, 0.8)',
+        borderColor: 'rgba(255, 107, 107, 1)',
+        borderWidth: 2,
+        borderRadius: 8,
+      },
+    ],
+  };
+
+  const dailyChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        padding: 12,
+        borderRadius: 8,
+        titleFont: { size: 14, weight: 'bold' as const },
+        bodyFont: { size: 13 },
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+          font: { size: 12 },
+        },
+        grid: {
+          color: 'rgba(0, 0, 0, 0.05)',
+        },
+      },
+      x: {
+        ticks: {
+          font: { size: 11 },
+        },
+        grid: {
+          display: false,
+        },
+      },
+    },
+  };
+
+  const sourceChartData = {
+    labels: ['Popup Form', 'Landing Page'],
+    datasets: [
+      {
+        data: [sourceData.popup.count, sourceData.landing.count],
+        backgroundColor: [
+          'rgba(139, 92, 246, 0.9)',
+          'rgba(34, 197, 94, 0.9)',
+        ],
+        borderColor: [
+          'rgba(139, 92, 246, 1)',
+          'rgba(34, 197, 94, 1)',
+        ],
+        borderWidth: 2,
+      },
+    ],
+  };
+
+  const sourceChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom' as const,
+        labels: {
+          padding: 15,
+          font: { size: 13, weight: 'bold' as const },
+          usePointStyle: true,
+          pointStyle: 'circle',
+        },
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        padding: 12,
+        borderRadius: 8,
+        callbacks: {
+          label: function(context: any) {
+            const label = context.label || '';
+            const value = context.parsed || 0;
+            const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+            const percentage = ((value / total) * 100).toFixed(1);
+            return `${label}: ${value} (${percentage}%)`;
+          }
+        }
+      },
+    },
+  };
+
+  const educationChartData = {
+    labels: educationData.map(edu => edu.name.charAt(0).toUpperCase() + edu.name.slice(1)),
+    datasets: [
+      {
+        data: educationData.map(edu => edu.count),
+        backgroundColor: [
+          'rgba(59, 130, 246, 0.9)',
+          'rgba(139, 92, 246, 0.9)',
+          'rgba(236, 72, 153, 0.9)',
+          'rgba(251, 146, 60, 0.9)',
+          'rgba(20, 184, 166, 0.9)',
+        ],
+        borderColor: [
+          'rgba(59, 130, 246, 1)',
+          'rgba(139, 92, 246, 1)',
+          'rgba(236, 72, 153, 1)',
+          'rgba(251, 146, 60, 1)',
+          'rgba(20, 184, 166, 1)',
+        ],
+        borderWidth: 2,
+      },
+    ],
+  };
+
+  const educationChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'right' as const,
+        labels: {
+          padding: 12,
+          font: { size: 12, weight: 'bold' as const },
+          usePointStyle: true,
+          pointStyle: 'circle',
+        },
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        padding: 12,
+        borderRadius: 8,
+        callbacks: {
+          label: function(context: any) {
+            const label = context.label || '';
+            const value = context.parsed || 0;
+            const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+            const percentage = ((value / total) * 100).toFixed(1);
+            return `${label}: ${value} (${percentage}%)`;
+          }
+        }
+      },
+    },
+  };
+
+  // Trend Line Chart Data (Last 30 days)
+  const getLast30DaysData = () => {
+    const dayCount: { [key: string]: number } = {};
+    const last30Days = Array.from({ length: 30 }, (_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - (29 - i));
+      return date.toLocaleDateString();
+    });
+    
+    last30Days.forEach(date => {
+      dayCount[date] = 0;
+    });
+    
+    registrations.forEach((reg) => {
+      const date = new Date(reg.created_at).toLocaleDateString();
+      if (dayCount[date] !== undefined) {
+        dayCount[date]++;
+      }
+    });
+    
+    return last30Days.map(date => dayCount[date]);
+  };
+
+  const trendChartData = {
+    labels: Array.from({ length: 30 }, (_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - (29 - i));
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }),
+    datasets: [
+      {
+        label: 'Daily Registrations',
+        data: getLast30DaysData(),
+        fill: true,
+        backgroundColor: 'rgba(255, 107, 107, 0.1)',
+        borderColor: 'rgba(255, 107, 107, 1)',
+        borderWidth: 3,
+        tension: 0.4,
+        pointBackgroundColor: 'rgba(255, 107, 107, 1)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+      },
+    ],
+  };
+
+  const trendChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        padding: 12,
+        borderRadius: 8,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+          font: { size: 11 },
+        },
+        grid: {
+          color: 'rgba(0, 0, 0, 0.05)',
+        },
+      },
+      x: {
+        ticks: {
+          font: { size: 10 },
+          maxRotation: 45,
+          minRotation: 45,
+        },
+        grid: {
+          display: false,
+        },
+      },
+    },
+  };
 
   // Password Login Screen
   if (!isAuthenticated) {
@@ -349,77 +614,35 @@ export default function AdminDashboard() {
 
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* 30-Day Trend Line Chart */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2">
+            <h3 className="text-lg font-bold text-text-dark mb-4">Registration Trend (Last 30 Days)</h3>
+            <div className="h-64">
+              <Line data={trendChartData} options={trendChartOptions} />
+            </div>
+          </div>
+
           {/* Daily Registrations Bar Chart */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <h3 className="text-lg font-bold text-text-dark mb-4">Last 7 Days</h3>
-            <div className="space-y-3">
-              {dailyData.map(([date, count]) => (
-                <div key={date} className="flex items-center gap-3">
-                  <div className="text-xs text-text-medium w-20 flex-shrink-0">{date}</div>
-                  <div className="flex-1 bg-gray-100 rounded-full h-8 relative overflow-hidden">
-                    <div 
-                      className="bg-gradient-to-r from-coral to-coral-dark h-full rounded-full flex items-center justify-end pr-3 transition-all duration-500"
-                      style={{ width: `${(count / maxDaily) * 100}%` }}
-                    >
-                      <span className="text-white text-sm font-semibold">{count}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="h-64">
+              <Bar data={dailyChartData} options={dailyChartOptions} />
             </div>
           </div>
 
-          {/* Source Distribution */}
+          {/* Source Distribution Doughnut Chart */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <h3 className="text-lg font-bold text-text-dark mb-4">Registration Source</h3>
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm font-medium text-text-dark">Popup Form</span>
-                  <span className="text-sm font-bold text-purple-600">{sourceData.popup.count} ({sourceData.popup.percent}%)</span>
-                </div>
-                <div className="w-full bg-gray-100 rounded-full h-6 overflow-hidden">
-                  <div 
-                    className="bg-gradient-to-r from-purple-500 to-purple-700 h-full rounded-full transition-all duration-500"
-                    style={{ width: `${sourceData.popup.percent}%` }}
-                  ></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm font-medium text-text-dark">Landing Page</span>
-                  <span className="text-sm font-bold text-green-600">{sourceData.landing.count} ({sourceData.landing.percent}%)</span>
-                </div>
-                <div className="w-full bg-gray-100 rounded-full h-6 overflow-hidden">
-                  <div 
-                    className="bg-gradient-to-r from-green-500 to-green-700 h-full rounded-full transition-all duration-500"
-                    style={{ width: `${sourceData.landing.percent}%` }}
-                  ></div>
-                </div>
-              </div>
+            <div className="h-64 flex items-center justify-center">
+              <Doughnut data={sourceChartData} options={sourceChartOptions} />
             </div>
           </div>
 
-          {/* Education Distribution */}
+          {/* Education Distribution Pie Chart */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2">
             <h3 className="text-lg font-bold text-text-dark mb-4">Education Level Distribution</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {educationData.map((edu, idx) => {
-                const colors = [
-                  'from-blue-500 to-blue-700',
-                  'from-purple-500 to-purple-700',
-                  'from-pink-500 to-pink-700',
-                  'from-orange-500 to-orange-700',
-                  'from-teal-500 to-teal-700'
-                ];
-                return (
-                  <div key={edu.name} className={`bg-gradient-to-br ${colors[idx % colors.length]} rounded-xl p-4 text-white`}>
-                    <div className="text-sm opacity-90 mb-1 capitalize">{edu.name}</div>
-                    <div className="text-3xl font-bold">{edu.count}</div>
-                    <div className="text-sm opacity-90 mt-1">{edu.percent}% of total</div>
-                  </div>
-                );
-              })}
+            <div className="h-80 flex items-center justify-center">
+              <Doughnut data={educationChartData} options={educationChartOptions} />
             </div>
           </div>
         </div>
