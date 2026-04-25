@@ -13,6 +13,21 @@ export default function RegistrationPopup() {
   void submitted;
 
   useEffect(() => {
+    const event = new CustomEvent('registration-popup-change', { detail: { isOpen } });
+    window.dispatchEvent(event);
+    
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     // Auto-scroll to core-modules section on page load
     const timer = setTimeout(() => {
       const coreModulesSection = document.getElementById("core-modules");

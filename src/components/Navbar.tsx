@@ -16,6 +16,15 @@ export default function Navbar() {
   const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  useEffect(() => {
+    const handlePopupChange = (e: any) => {
+      setIsPopupOpen(e.detail.isOpen);
+    };
+    window.addEventListener('registration-popup-change', handlePopupChange);
+    return () => window.removeEventListener('registration-popup-change', handlePopupChange);
+  }, []);
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -52,8 +61,8 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        hidden ? "-translate-y-full" : "translate-y-0"
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+        hidden || isPopupOpen ? "-translate-y-full" : "translate-y-0"
       } ${
         scrolled
           ? "bg-[#0d1b2e] shadow-lg shadow-black/30 py-3"
