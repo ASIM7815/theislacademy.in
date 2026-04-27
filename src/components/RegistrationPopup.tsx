@@ -212,7 +212,7 @@ export default function RegistrationPopup() {
                   htmlFor="popup-education"
                   className="block text-sm font-medium text-text-dark mb-2"
                 >
-                  Education Level
+                  Current Academic Status
                 </label>
                 <select
                   id="popup-education"
@@ -220,9 +220,12 @@ export default function RegistrationPopup() {
                   required
                   className="w-full px-4 py-3 rounded-xl bg-beige border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all appearance-none"
                 >
-                  <option value="">Select your education level</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="undergraduate">Undergraduate</option>
+                  <option value="">Select your current academic status</option>
+                  <option value="10th-completed">10th Grade Completed</option>
+                  <option value="intermediate-pursuing">Pursuing Intermediate</option>
+                  <option value="intermediate-completed">Intermediate Completed</option>
+                  <option value="undergraduate-pursuing">Pursuing Undergraduate Degree</option>
+                  <option value="undergraduate-completed">Undergraduate Degree Completed</option>
                   <option value="foundation">Foundation Program</option>
                 </select>
               </div>
