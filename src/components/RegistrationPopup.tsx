@@ -227,6 +227,7 @@ export default function RegistrationPopup() {
                   <option value="Intermediate/Diploma/12th">Intermediate/Diploma/12th</option>
                   <option value="Graduation">Graduation</option>
                   <option value="Post Graduation">Post Graduation</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
 
