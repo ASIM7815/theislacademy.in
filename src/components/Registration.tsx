@@ -21,7 +21,9 @@ export default function Registration() {
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const phone = formData.get("phone") as string;
-    const education = formData.get("education") as string;
+    const educationLevel = formData.get("educationLevel") as string;
+    const educationStatus = formData.get("educationStatus") as string;
+    const education = `${educationLevel} - ${educationStatus}`;
     const message = formData.get("message") as string;
 
     try {
@@ -179,24 +181,41 @@ export default function Registration() {
 
                 <div>
                   <label
-                    htmlFor="education"
+                    htmlFor="educationLevel"
                     className="block text-sm font-medium text-text-dark mb-2"
                   >
-                    Current Academic Status
+                    Education Level
                   </label>
                   <select
-                    id="education"
-                    name="education"
+                    id="educationLevel"
+                    name="educationLevel"
                     required
                     className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all appearance-none"
                   >
-                    <option value="">Select your current academic status</option>
-                    <option value="10th-completed">10th Grade Completed</option>
-                    <option value="intermediate-pursuing">Pursuing Intermediate</option>
-                    <option value="intermediate-completed">Intermediate Completed</option>
-                    <option value="undergraduate-pursuing">Pursuing Undergraduate Degree</option>
-                    <option value="undergraduate-completed">Undergraduate Degree Completed</option>
-                    <option value="foundation">Foundation Program</option>
+                    <option value="">Select your education level</option>
+                    <option value="10th">10th</option>
+                    <option value="Intermediate/Diploma/12th">Intermediate/Diploma/12th</option>
+                    <option value="Graduation">Graduation</option>
+                    <option value="Post Graduation">Post Graduation</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="educationStatus"
+                    className="block text-sm font-medium text-text-dark mb-2"
+                  >
+                    Education Status
+                  </label>
+                  <select
+                    id="educationStatus"
+                    name="educationStatus"
+                    required
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all appearance-none"
+                  >
+                    <option value="">Select your education status</option>
+                    <option value="Pursuing">Pursuing</option>
+                    <option value="Completed">Completed</option>
                   </select>
                 </div>
 

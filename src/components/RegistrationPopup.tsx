@@ -52,7 +52,9 @@ export default function RegistrationPopup() {
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const phone = formData.get("phone") as string;
-    const education = formData.get("education") as string;
+    const educationLevel = formData.get("educationLevel") as string;
+    const educationStatus = formData.get("educationStatus") as string;
+    const education = `${educationLevel} - ${educationStatus}`;
 
     try {
       // Save to Supabase
@@ -115,51 +117,51 @@ export default function RegistrationPopup() {
             <X className="w-5 h-5 text-gray-600" />
           </button>
 
-          <div className="p-8 md:p-10">
+          <div className="p-6 md:p-8">
             {/* Header */}
-            <div className="mb-8">
-              <span className="text-coral text-sm font-semibold uppercase tracking-widest">
+            <div className="mb-6">
+              <span className="text-coral text-xs font-semibold uppercase tracking-widest">
                 Join Us
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-text-dark mt-3 mb-4 leading-tight">
+              <h2 className="text-2xl md:text-3xl font-bold text-text-dark mt-2 mb-3 leading-tight">
                 Register Now
               </h2>
-              <div className="w-16 h-1 bg-coral rounded-full mb-4" />
-              <p className="text-text-medium text-base leading-relaxed">
+              <div className="w-12 h-1 bg-coral rounded-full mb-3" />
+              <p className="text-text-medium text-sm leading-relaxed">
                 Take the first step towards building your leadership skills,
                 business acumen, and communication confidence.
               </p>
             </div>
 
             {/* Info items */}
-            <div className="flex flex-col gap-3 mb-8">
+            <div className="flex flex-col gap-2 mb-6">
               {([
                 { icon: GraduationCap, text: "Open to Intermediate, Undergraduate & Foundation students" },
                 { icon: Calendar, text: "Year-round program from June to March" },
                 { icon: CheckCircle, text: "100% activity-based — no traditional exams" },
               ] as { icon: LucideIcon; text: string }[]).map((item) => (
-                <div key={item.text} className="flex items-center gap-3">
-                  <span className="w-8 h-8 flex items-center justify-center bg-coral/10 rounded-lg flex-shrink-0">
-                    <item.icon className="w-4 h-4 text-coral" strokeWidth={1.5} />
+                <div key={item.text} className="flex items-center gap-2">
+                  <span className="w-7 h-7 flex items-center justify-center bg-coral/10 rounded-lg flex-shrink-0">
+                    <item.icon className="w-3.5 h-3.5 text-coral" strokeWidth={1.5} />
                   </span>
-                  <span className="text-text-medium text-sm">{item.text}</span>
+                  <span className="text-text-medium text-xs">{item.text}</span>
                 </div>
               ))}
             </div>
 
             {/* Error Message */}
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 mb-4 text-sm">
+              <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-3 mb-4 text-xs">
                 {error}
               </div>
             )}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               <div>
                 <label
                   htmlFor="popup-name"
-                  className="block text-sm font-medium text-text-dark mb-2"
+                  className="block text-xs font-medium text-text-dark mb-1.5"
                 >
                   Full Name
                 </label>
@@ -169,14 +171,14 @@ export default function RegistrationPopup() {
                   name="name"
                   required
                   placeholder="Enter your full name"
-                  className="w-full px-4 py-3 rounded-xl bg-beige border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all"
+                  className="w-full px-3 py-2.5 rounded-xl bg-beige border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="popup-email"
-                  className="block text-sm font-medium text-text-dark mb-2"
+                  className="block text-xs font-medium text-text-dark mb-1.5"
                 >
                   Email Address
                 </label>
@@ -186,14 +188,14 @@ export default function RegistrationPopup() {
                   name="email"
                   required
                   placeholder="Enter your email"
-                  className="w-full px-4 py-3 rounded-xl bg-beige border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all"
+                  className="w-full px-3 py-2.5 rounded-xl bg-beige border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="popup-phone"
-                  className="block text-sm font-medium text-text-dark mb-2"
+                  className="block text-xs font-medium text-text-dark mb-1.5"
                 >
                   Phone Number
                 </label>
@@ -203,37 +205,54 @@ export default function RegistrationPopup() {
                   name="phone"
                   required
                   placeholder="Enter your phone number"
-                  className="w-full px-4 py-3 rounded-xl bg-beige border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all"
+                  className="w-full px-3 py-2.5 rounded-xl bg-beige border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all"
                 />
               </div>
 
               <div>
                 <label
-                  htmlFor="popup-education"
-                  className="block text-sm font-medium text-text-dark mb-2"
+                  htmlFor="popup-educationLevel"
+                  className="block text-xs font-medium text-text-dark mb-1.5"
                 >
-                  Current Academic Status
+                  Education Level
                 </label>
                 <select
-                  id="popup-education"
-                  name="education"
+                  id="popup-educationLevel"
+                  name="educationLevel"
                   required
-                  className="w-full px-4 py-3 rounded-xl bg-beige border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all appearance-none"
+                  className="w-full px-3 py-2.5 rounded-xl bg-beige border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all appearance-none"
                 >
-                  <option value="">Select your current academic status</option>
-                  <option value="10th-completed">10th Grade Completed</option>
-                  <option value="intermediate-pursuing">Pursuing Intermediate</option>
-                  <option value="intermediate-completed">Intermediate Completed</option>
-                  <option value="undergraduate-pursuing">Pursuing Undergraduate Degree</option>
-                  <option value="undergraduate-completed">Undergraduate Degree Completed</option>
-                  <option value="foundation">Foundation Program</option>
+                  <option value="">Select your education level</option>
+                  <option value="10th">10th</option>
+                  <option value="Intermediate/Diploma/12th">Intermediate/Diploma/12th</option>
+                  <option value="Graduation">Graduation</option>
+                  <option value="Post Graduation">Post Graduation</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="popup-educationStatus"
+                  className="block text-xs font-medium text-text-dark mb-1.5"
+                >
+                  Education Status
+                </label>
+                <select
+                  id="popup-educationStatus"
+                  name="educationStatus"
+                  required
+                  className="w-full px-3 py-2.5 rounded-xl bg-beige border border-gray-200 text-text-dark text-sm focus:outline-none focus:ring-2 focus:ring-coral/30 focus:border-coral transition-all appearance-none"
+                >
+                  <option value="">Select your education status</option>
+                  <option value="Pursuing">Pursuing</option>
+                  <option value="Completed">Completed</option>
                 </select>
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-coral hover:bg-coral-dark text-white py-3.5 rounded-xl font-semibold text-base transition-all duration-200 hover:shadow-lg hover:shadow-coral/30 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-coral hover:bg-coral-dark text-white py-3 rounded-xl font-semibold text-sm transition-all duration-200 hover:shadow-lg hover:shadow-coral/30 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? "Submitting..." : "Register Now"}
               </button>
