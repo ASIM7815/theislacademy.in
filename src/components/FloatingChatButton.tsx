@@ -1,15 +1,26 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MessageCircle, X } from "lucide-react";
 
 export default function FloatingChatButton() {
   const [isHovered, setIsHovered] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  useEffect(() => {
+    const handlePopupChange = (e: any) => {
+      setIsPopupOpen(e.detail.isOpen);
+    };
+    window.addEventListener('registration-popup-change', handlePopupChange);
+    return () => window.removeEventListener('registration-popup-change', handlePopupChange);
+  }, []);
 
   return (
     <Link href="/faq">
       <div
-        className="fixed bottom-6 right-6 z-50 group"
+        className={`fixed bottom-6 right-6 z-50 group transition-all duration-300 ${
+          isPopupOpen ? "opacity-0 pointer-events-none translate-y-4" : "opacity-100 translate-y-0"
+        }`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

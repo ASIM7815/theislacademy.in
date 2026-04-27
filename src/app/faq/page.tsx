@@ -256,42 +256,42 @@ export default function FAQPage() {
 
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-[#0d1b2e] via-[#1a2332] to-[#0d1b2e] flex flex-col">
-      {/* Back Button */}
+      {/* Back Button - Smaller on mobile */}
       <Link href="/">
-        <button className="fixed top-4 left-4 z-50 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white rounded-full p-2.5 transition-all duration-300 hover:scale-110 shadow-lg border border-white/10">
-          <ArrowLeft className="w-5 h-5" />
+        <button className="fixed top-2 left-2 md:top-4 md:left-4 z-50 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white rounded-full p-1.5 md:p-2.5 transition-all duration-300 hover:scale-110 shadow-lg border border-white/10">
+          <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
         </button>
       </Link>
       
-      {/* Compact Chat Header */}
-      <div className="bg-gradient-to-r from-coral via-[#e94560] to-coral-dark py-3 px-6 shadow-2xl flex-shrink-0 border-b border-white/10">
-        <div className="flex items-center justify-center gap-3 max-w-4xl mx-auto">
-          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg ring-2 ring-white/30">
-            <Bot className="w-6 h-6 text-coral" strokeWidth={2.5} />
+      {/* Compact Chat Header - Much smaller on mobile */}
+      <div className="bg-gradient-to-r from-coral via-[#e94560] to-coral-dark py-2 px-4 md:py-3 md:px-6 shadow-2xl flex-shrink-0 border-b border-white/10">
+        <div className="flex items-center justify-center gap-2 md:gap-3 max-w-4xl mx-auto">
+          <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center shadow-lg ring-2 ring-white/30">
+            <Bot className="w-5 h-5 md:w-6 md:h-6 text-coral" strokeWidth={2.5} />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-white tracking-tight">ISL Academy Assistant</h1>
-            <p className="text-white/80 text-xs font-medium">AI-Powered Support 24/7</p>
+            <h1 className="text-sm md:text-lg font-bold text-white tracking-tight">ISL Academy Assistant</h1>
+            <p className="text-white/80 text-[10px] md:text-xs font-medium">AI-Powered Support 24/7</p>
           </div>
         </div>
       </div>
 
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-6 pt-6">
-        <div className="max-w-4xl mx-auto space-y-4">
+      {/* Messages Area - Reduced padding on mobile */}
+      <div className="flex-1 overflow-y-auto p-3 md:p-6 pt-4 md:pt-6">
+        <div className="max-w-4xl mx-auto space-y-3 md:space-y-4">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"} animate-fadeIn`}
             >
               <div
-                className={`max-w-[85%] md:max-w-[60%] rounded-3xl p-4 shadow-2xl backdrop-blur-sm ${
+                className={`max-w-[85%] md:max-w-[60%] rounded-3xl p-3 md:p-4 shadow-2xl backdrop-blur-sm ${
                   message.sender === "user"
                     ? "bg-gradient-to-br from-coral via-[#e94560] to-coral-dark text-white rounded-br-md"
                     : "bg-white/95 text-gray-800 rounded-bl-md border border-gray-100"
                 }`}
               >
-                <p className="whitespace-pre-line text-sm md:text-base leading-relaxed font-medium">
+                <p className="whitespace-pre-line text-xs md:text-base leading-relaxed font-medium">
                   {message.text}
                 </p>
                 
@@ -299,9 +299,9 @@ export default function FAQPage() {
                 {message.showRegisterButton && (
                   <Link href="/#register">
                     <button
-                      className="mt-4 w-full bg-gradient-to-r from-[#FFD700] via-[#FFA500] to-[#FF8C00] hover:from-[#FFA500] hover:to-[#FF6347] text-white font-bold py-3 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl shadow-lg"
+                      className="mt-3 md:mt-4 w-full bg-gradient-to-r from-[#FFD700] via-[#FFA500] to-[#FF8C00] hover:from-[#FFA500] hover:to-[#FF6347] text-white font-bold py-2.5 md:py-3 px-3 md:px-4 rounded-2xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl shadow-lg text-sm md:text-base"
                     >
-                      <span className="text-xl">🎓</span>
+                      <span className="text-lg md:text-xl">🎓</span>
                       <span>Register Now</span>
                     </button>
                   </Link>
@@ -311,14 +311,14 @@ export default function FAQPage() {
                 {message.showWhatsApp && message.userQuestion && (
                   <button
                     onClick={() => handleWhatsAppClick(message.userQuestion!)}
-                    className="mt-4 w-full bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#128C7E] hover:to-[#075E54] text-white font-semibold py-3 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg"
+                    className="mt-3 md:mt-4 w-full bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#128C7E] hover:to-[#075E54] text-white font-semibold py-2.5 md:py-3 px-3 md:px-4 rounded-2xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg text-sm md:text-base"
                   >
-                    <MessageCircle className="w-5 h-5" strokeWidth={2.5} />
+                    <MessageCircle className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2.5} />
                     <span>Chat with us on WhatsApp</span>
                   </button>
                 )}
                 
-                <span className={`text-xs mt-2 block font-semibold ${message.sender === "user" ? "text-white/60" : "text-gray-400"}`}>
+                <span className={`text-[10px] md:text-xs mt-1.5 md:mt-2 block font-semibold ${message.sender === "user" ? "text-white/60" : "text-gray-400"}`}>
                   {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
@@ -328,11 +328,11 @@ export default function FAQPage() {
           {/* Typing Indicator */}
           {isTyping && (
             <div className="flex justify-start animate-fadeIn">
-              <div className="bg-white/95 rounded-3xl rounded-bl-md p-4 shadow-2xl border border-gray-100">
+              <div className="bg-white/95 rounded-3xl rounded-bl-md p-3 md:p-4 shadow-2xl border border-gray-100">
                 <div className="flex gap-1.5">
-                  <span className="w-2.5 h-2.5 bg-coral rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
-                  <span className="w-2.5 h-2.5 bg-coral rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
-                  <span className="w-2.5 h-2.5 bg-coral rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></span>
+                  <span className="w-2 h-2 md:w-2.5 md:h-2.5 bg-coral rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
+                  <span className="w-2 h-2 md:w-2.5 md:h-2.5 bg-coral rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
+                  <span className="w-2 h-2 md:w-2.5 md:h-2.5 bg-coral rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></span>
                 </div>
               </div>
             </div>
@@ -340,18 +340,18 @@ export default function FAQPage() {
 
           {/* Predefined Questions - Show only once */}
           {showQuestions && !hasInteracted && !isTyping && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-4 animate-fadeIn">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 pt-3 md:pt-4 animate-fadeIn">
               {predefinedQuestions.map((q) => (
                 <button
                   key={q.id}
                   onClick={() => handleQuestionClick(q.text)}
-                  className="group relative bg-gradient-to-br from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 backdrop-blur-md border border-white/20 hover:border-coral/50 rounded-2xl p-4 text-left transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-coral/20"
+                  className="group relative bg-gradient-to-br from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 backdrop-blur-md border border-white/20 hover:border-coral/50 rounded-2xl p-3 md:p-4 text-left transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-coral/20"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-coral to-coral-dark rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-xl">{q.icon}</span>
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-coral to-coral-dark rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-base md:text-xl">{q.icon}</span>
                     </div>
-                    <span className="text-white text-sm md:text-base font-semibold group-hover:text-coral transition-colors flex-1">
+                    <span className="text-white text-xs md:text-base font-semibold group-hover:text-coral transition-colors flex-1">
                       {q.text}
                     </span>
                   </div>
@@ -365,9 +365,9 @@ export default function FAQPage() {
         </div>
       </div>
 
-      {/* Input Area */}
-      <div className="bg-gradient-to-r from-coral via-[#e94560] to-coral-dark p-4 shadow-2xl flex-shrink-0 border-t border-white/20">
-        <div className="flex gap-3 items-center max-w-4xl mx-auto">
+      {/* Input Area - Smaller on mobile */}
+      <div className="bg-gradient-to-r from-coral via-[#e94560] to-coral-dark p-2.5 md:p-4 shadow-2xl flex-shrink-0 border-t border-white/20">
+        <div className="flex gap-2 md:gap-3 items-center max-w-4xl mx-auto">
           <input
             ref={inputRef}
             type="text"
@@ -375,14 +375,14 @@ export default function FAQPage() {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 bg-white/95 backdrop-blur-sm border-2 border-white/30 focus:border-white rounded-full px-6 py-3.5 focus:outline-none focus:ring-4 focus:ring-white/30 text-gray-800 placeholder-gray-500 font-medium shadow-lg transition-all duration-200"
+            className="flex-1 bg-white/95 backdrop-blur-sm border-2 border-white/30 focus:border-white rounded-full px-4 md:px-6 py-2.5 md:py-3.5 focus:outline-none focus:ring-4 focus:ring-white/30 text-gray-800 placeholder-gray-500 font-medium shadow-lg transition-all duration-200 text-sm md:text-base"
           />
           <button
             onClick={() => handleSendMessage()}
             disabled={!inputValue.trim()}
-            className="bg-white text-coral rounded-full p-3.5 hover:shadow-2xl hover:shadow-white/40 hover:scale-110 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none"
+            className="bg-white text-coral rounded-full p-2.5 md:p-3.5 hover:shadow-2xl hover:shadow-white/40 hover:scale-110 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none"
           >
-            <Send className="w-5 h-5" strokeWidth={2.5} />
+            <Send className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2.5} />
           </button>
         </div>
       </div>
