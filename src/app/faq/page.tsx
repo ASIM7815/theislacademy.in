@@ -11,6 +11,7 @@ interface Message {
   showWhatsApp?: boolean;
   userQuestion?: string;
   showRegisterButton?: boolean;
+  showContactWhatsApp?: boolean;
 }
 
 const predefinedQuestions = [
@@ -45,7 +46,7 @@ Not just education - a transformation journey. 🌟`,
 
 For detailed fee information, please connect with our advisor.
 
-📞 8897869444
+📞 8897860944
 
 Our team will guide you through flexible payment options! 💼`,
 
@@ -79,6 +80,17 @@ Our campus is equipped with modern facilities to support your learning journey! 
 • Focus on holistic development
 
 Join us in shaping tomorrow's leaders! 💪`,
+
+  "contact": `📞 Contact ISL Academy
+
+Phone: 8897860944
+📍 Location: Bandlaguda Campus, Hyderabad
+
+📧 We're here to help you!
+
+Our team is available to answer all your questions about admissions, courses, and more. 
+
+Feel free to reach out anytime! 😊`,
 };
 
 export default function FAQPage() {
@@ -119,6 +131,14 @@ export default function FAQPage() {
         text: `That's wonderful! 🎉 We're excited to have you join ISL Academy!\n\nClick the button below to start your registration process. Our team will guide you through every step.`,
         showRegister: true
       };
+    }
+
+    // Contact details
+    if (lowerMessage.includes("contact") || lowerMessage.includes("phone") || 
+        lowerMessage.includes("number") || lowerMessage.includes("call") ||
+        lowerMessage.includes("reach") || lowerMessage.includes("email") ||
+        lowerMessage.includes("how to contact") || lowerMessage.includes("get in touch")) {
+      return { text: faqResponses.contact };
     }
 
     // Eligibility related
@@ -181,7 +201,7 @@ export default function FAQPage() {
     
     // Thank you
     else if (lowerMessage.includes("thank") || lowerMessage.includes("thanks")) {
-      return { text: `You're welcome! 😊\n\nIf you have any more questions, feel free to ask. We're here to help!\n\nYou can also reach us at:\n📞 8897869444` };
+      return { text: `You're welcome! 😊\n\nIf you have any more questions, feel free to ask. We're here to help!\n\nYou can also reach us at:\n📞 8897860944` };
     }
     
     // Unknown questions - trigger WhatsApp
@@ -219,6 +239,9 @@ export default function FAQPage() {
       // Check if it's a fallback response (unknown question)
       const isFallback = botResponse.text === "fallback";
       
+      // Check if response contains contact number
+      const hasContactNumber = botResponse.text.includes("8897860944") || botResponse.text.includes("📞");
+      
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: isFallback 
@@ -229,6 +252,7 @@ export default function FAQPage() {
         showWhatsApp: isFallback,
         userQuestion: isFallback ? textToSend : undefined,
         showRegisterButton: botResponse.showRegister || false,
+        showContactWhatsApp: hasContactNumber && !isFallback,
       };
 
       setMessages((prev) => [...prev, botMessage]);
@@ -248,8 +272,15 @@ export default function FAQPage() {
   };
 
   const handleWhatsAppClick = (question: string) => {
-    const phoneNumber = "918897869444"; // WhatsApp number with country code (no + or spaces)
+    const phoneNumber = "918897860944"; // WhatsApp number with country code (no + or spaces)
     const message = encodeURIComponent(`Hi! I have a question: ${question}`);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
+  const handleContactWhatsAppClick = () => {
+    const phoneNumber = "918897860944";
+    const message = encodeURIComponent(`Hi! I'd like to know more about ISL Academy.`);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, "_blank");
   };
@@ -305,6 +336,17 @@ export default function FAQPage() {
                       <span>Register Now</span>
                     </button>
                   </Link>
+                )}
+                
+                {/* WhatsApp Button for contact number responses */}
+                {message.showContactWhatsApp && (
+                  <button
+                    onClick={handleContactWhatsAppClick}
+                    className="mt-3 md:mt-4 w-full bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#128C7E] hover:to-[#075E54] text-white font-semibold py-2.5 md:py-3 px-3 md:px-4 rounded-2xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg text-sm md:text-base"
+                  >
+                    <MessageCircle className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2.5} />
+                    <span>Contact us on WhatsApp</span>
+                  </button>
                 )}
                 
                 {/* WhatsApp Button for unknown questions */}
