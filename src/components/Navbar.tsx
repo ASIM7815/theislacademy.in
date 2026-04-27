@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "#home", label: "Home" },
@@ -17,6 +18,8 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
 
   useEffect(() => {
     const handlePopupChange = (e: any) => {
@@ -34,22 +37,28 @@ export default function Navbar() {
       setHidden(currentY > lastY && currentY > 100);
       lastY = currentY;
 
-      const sections = document.querySelectorAll("section[id]");
-      let current = "home";
-      sections.forEach((section) => {
-        const el = section as HTMLElement;
-        const top = el.offsetTop - 120;
-        if (currentY >= top) {
-          current = el.id;
-        }
-      });
-      setActiveSection(current);
+      if (isHomePage) {
+        const sections = document.querySelectorAll("section[id]");
+        let current = "home";
+        sections.forEach((section) => {
+          const el = section as HTMLElement;
+          const top = el.offsetTop - 120;
+          if (currentY >= top) {
+            current = el.id;
+          }
+        });
+        setActiveSection(current);
+      }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isHomePage]);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!isHomePage) {
+      // If not on home page, navigate to home page with hash
+      return;
+    }
     e.preventDefault();
     setMobileOpen(false);
     const el = document.querySelector(href);
@@ -65,8 +74,8 @@ export default function Navbar() {
         hidden || isPopupOpen ? "-translate-y-full" : "translate-y-0"
       } ${
         scrolled
-          ? "bg-[#0d1b2e] shadow-lg shadow-black/30 py-3"
-          : "bg-[#0d1b2e]/80 backdrop-blur-md py-5"
+          ? "bg-[#0d1b2e] shadow-lg shadow-black/30 py-3 md:py-3"
+          : "bg-[#0d1b2e]/80 backdrop-blur-md py-2 md:py-5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 flex items-center justify-between">
@@ -78,59 +87,81 @@ export default function Navbar() {
             width={240}
             height={120}
             quality={100}
-            className="object-contain h-20 w-auto"
+            className="object-contain h-12 md:h-20 w-auto"
           />
         </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.slice(0, -1).map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => handleClick(e, link.href)}
-              className={`text-sm font-medium transition-colors duration-200 hover:text-coral ${
-                activeSection === link.href.slice(1)
-                  ? "text-coral"
-                  : "text-white/90"
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href="#register"
-            onClick={(e) => handleClick(e, "#register")}
-            className="bg-coral hover:bg-coral-dark text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 hover:shadow-lg hover:shadow-coral/30"
-          >
-            Register Now
-          </a>
+          {isHomePage ? (
+            <>
+              {navLinks.slice(0, -1).map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleClick(e, link.href)}
+                  className={`text-sm font-medium transition-colors duration-200 hover:text-coral ${
+                    activeSection === link.href.slice(1)
+                      ? "text-coral"
+                      : "text-white/90"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href="#register"
+                onClick={(e) => handleClick(e, "#register")}
+                className="bg-coral hover:bg-coral-dark text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 hover:shadow-lg hover:shadow-coral/30"
+              >
+                Register Now
+              </a>
+            </>
+          ) : (
+            <>
+              {navLinks.slice(0, -1).map((link) => (
+                <Link
+                  key={link.href}
+                  href={`/${link.href}`}
+                  className="text-sm font-medium transition-colors duration-200 hover:text-coral text-white/90"
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Link
+                href="/#register"
+                className="bg-coral hover:bg-coral-dark text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 hover:shadow-lg hover:shadow-coral/30"
+              >
+                Register Now
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Hamburger */}
         <button
-          className="md:hidden flex flex-col gap-1.5 p-2"
+          className="md:hidden flex flex-col gap-1 p-1.5"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
           <span
-            className={`block w-6 h-0.5 transition-all duration-300 ${
+            className={`block w-5 h-0.5 transition-all duration-300 ${
               mobileOpen
-                ? "rotate-45 translate-y-2 bg-white"
+                ? "rotate-45 translate-y-1.5 bg-white"
                 : "bg-white"
             }`}
           />
           <span
-            className={`block w-6 h-0.5 transition-all duration-300 ${
+            className={`block w-5 h-0.5 transition-all duration-300 ${
               mobileOpen
                 ? "opacity-0"
                 : "bg-white"
             }`}
           />
           <span
-            className={`block w-6 h-0.5 transition-all duration-300 ${
+            className={`block w-5 h-0.5 transition-all duration-300 ${
               mobileOpen
-                ? "-rotate-45 -translate-y-2 bg-white"
+                ? "-rotate-45 -translate-y-1.5 bg-white"
                 : "bg-white"
             }`}
           />
@@ -144,27 +175,51 @@ export default function Navbar() {
         }`}
       >
         <div className="p-6 pt-20 flex flex-col gap-2">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => handleClick(e, link.href)}
-              className={`text-lg font-medium py-3 px-4 rounded-xl transition-colors ${
-                activeSection === link.href.slice(1)
-                  ? "text-coral bg-coral/5"
-                  : "text-text-dark hover:bg-beige"
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href="#register"
-            onClick={(e) => handleClick(e, "#register")}
-            className="mt-4 bg-coral text-white py-3 px-6 rounded-full text-center font-semibold hover:bg-coral-dark transition-colors"
-          >
-            Register Now
-          </a>
+          {isHomePage ? (
+            <>
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleClick(e, link.href)}
+                  className={`text-lg font-medium py-3 px-4 rounded-xl transition-colors ${
+                    activeSection === link.href.slice(1)
+                      ? "text-coral bg-coral/5"
+                      : "text-text-dark hover:bg-beige"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href="#register"
+                onClick={(e) => handleClick(e, "#register")}
+                className="mt-4 bg-coral text-white py-3 px-6 rounded-full text-center font-semibold hover:bg-coral-dark transition-colors"
+              >
+                Register Now
+              </a>
+            </>
+          ) : (
+            <>
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={`/${link.href}`}
+                  onClick={() => setMobileOpen(false)}
+                  className="text-lg font-medium py-3 px-4 rounded-xl transition-colors text-text-dark hover:bg-beige"
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Link
+                href="/#register"
+                onClick={() => setMobileOpen(false)}
+                className="mt-4 bg-coral text-white py-3 px-6 rounded-full text-center font-semibold hover:bg-coral-dark transition-colors"
+              >
+                Register Now
+              </Link>
+            </>
+          )}
         </div>
       </div>
 

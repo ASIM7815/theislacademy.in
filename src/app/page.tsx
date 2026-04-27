@@ -13,12 +13,14 @@ import MissionStatement from "@/components/MissionStatement";
 import Footer from "@/components/Footer";
 import ScrollManager from "@/components/ScrollManager";
 import RegistrationPopup from "@/components/RegistrationPopup";
+import FloatingChatButton from "@/components/FloatingChatButton";
 
 export default function Home() {
   return (
     <>
       <ScrollManager />
       <RegistrationPopup />
+      <FloatingChatButton />
       <Navbar />
       <main>
         <Hero />
