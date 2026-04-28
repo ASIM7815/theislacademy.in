@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const cards = [
   {
-    images: ["/A1.jpg", "/slide1.jpg", "/replace 1.jpeg"],
+    images: ["/A1.jpg", "/green.jpeg", "/think.jpeg"],
     href: "#about",
     label: "Who We Are",
     shadowColor: "shadow-blue-500/30",
@@ -20,7 +20,7 @@ const cards = [
     bgColor: '#4a1a1a',
   },
   {
-    images: ["/add1.jpg", "/slide3.jpg", "/slide6.jpg"],
+    images: ["/india.jpeg", "/aim.jpeg", "/slide6.jpg"],
     href: "#register",
     label: "Where & When",
     shadowColor: "shadow-emerald-500/30",
