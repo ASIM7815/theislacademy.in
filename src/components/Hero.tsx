@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const cards = [
   {
-    images: ["/A1.jpg", "/green.jpeg", "/think.jpeg"],
+    images: ["/who.jpeg", "/green.jpeg", "/think.jpeg"],
     href: "#about",
     label: "Who We Are",
     shadowColor: "shadow-blue-500/30",
