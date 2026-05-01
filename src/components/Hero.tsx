@@ -12,7 +12,7 @@ const cards = [
     bgColor: '#1a2b4a',
   },
   {
-    images: ["/add2.jpg", "/line.jpeg", "/slide5.jpg"],
+    images: ["/add2.jpg", "/line.jpeg", "/ALL.jpeg"],
     href: "#about",
     label: "For Whom",
     shadowColor: "shadow-red-500/30",
@@ -99,7 +99,14 @@ export default function Hero() {
       {/* Cards */}
       <div ref={containerRef} className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-8 w-full">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-10">
-          {cards.map((card, i) => (
+          {cards.map((card, i) => {
+            // Check if current image is ALL.jpeg to remove red shadow and change background
+            const currentImg = card.images[currentImageIndex[i]];
+            const shouldHideShadow = currentImg === "/ALL.jpeg";
+            const shadowClass = shouldHideShadow ? "" : card.shadowColor;
+            const bgColor = shouldHideShadow ? '#0d1b2e' : card.bgColor;
+            
+            return (
             <a
               key={card.label}
               href={card.href}
@@ -107,13 +114,13 @@ export default function Hero() {
                 e.preventDefault();
                 document.querySelector(card.href)?.scrollIntoView({ behavior: "smooth" });
               }}
-              className={`hero-card group relative rounded-3xl overflow-hidden cursor-pointer block shadow-2xl ${card.shadowColor}`}
+              className={`hero-card group relative rounded-3xl overflow-hidden cursor-pointer block shadow-2xl ${shadowClass}`}
               style={{
                 aspectRatio: "2/3",
                 transformStyle: "preserve-3d",
-                transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s ease",
+                transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s ease, background-color 1s ease",
                 animation: `hero-card-in 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 0.18}s both`,
-                backgroundColor: card.bgColor,
+                backgroundColor: bgColor,
               }}
             >
               {/* Full bleed image with fade transition */}
@@ -147,7 +154,7 @@ export default function Hero() {
               {/* Top glow edge on hover */}
               <div className={`absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r ${card.glow} opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20`} />
             </a>
-          ))}
+          )})}
         </div>
       </div>
 
