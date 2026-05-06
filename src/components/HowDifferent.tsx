@@ -45,18 +45,13 @@ export default function HowDifferent() {
 
             <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-navy/10 lg:ml-4 w-64 sm:w-72 md:w-80 lg:w-96 mx-auto lg:mx-0">
               <Image
-                src="/stu1.png"
+                src="/enter.jpeg"
                 alt="ISL Academy Student"
                 width={400}
                 height={500}
                 className="w-full h-auto object-cover"
                 priority
               />
-              {/* Floating badge */}
-              <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl px-5 py-3 shadow-lg">
-                <p className="text-xs font-semibold text-coral uppercase tracking-widest mb-0.5">ISL Academy</p>
-                <p className="text-text-dark font-bold text-sm">Learn Business. Build Business.</p>
-              </div>
             </div>
 
             {/* Decorative dot grid */}
